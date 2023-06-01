@@ -2,14 +2,30 @@ import styled from 'styled-components';
 import DropDown from './DropDown';
 import OptionBox from './OptionBox';
 import { RxDragHandleDots2 } from 'react-icons/rx';
-import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { getQuestionTitle, getType } from '../store/questionSlice';
+import { useCallback } from 'react';
+interface QuestionProps {
+  idx: number;
+}
 
-const Question = () => {
-  const [category, setCategory] = useState('단답형');
+const Question: React.FC<QuestionProps> = ({ idx }) => {
+  const question = useAppSelector((state) => state.survey.questions[idx]);
+  const dispatch = useAppDispatch();
 
-  const getOption = (category: string) => {
-    setCategory(category);
-  };
+  const changeType = useCallback(
+    (str: string): void => {
+      dispatch(getType({ str, idx }));
+    },
+    [dispatch, idx],
+  );
+
+  const changeTitle = useCallback(
+    (str: string): void => {
+      dispatch(getQuestionTitle({ str, idx }));
+    },
+    [dispatch, idx],
+  );
 
   return (
     <>
@@ -18,10 +34,16 @@ const Question = () => {
           <RxDragHandleDots2 size={20} style={{ transform: 'rotate(90deg)' }} />
         </Drag>
         <TopBox>
-          <QuestionTitle placeholder="질문" />
-          <DropDown getOption={getOption} />
+          <QuestionTitle
+            placeholder="질문"
+            value={question.questionTitle}
+            onChange={(e) => {
+              changeTitle(e.target.value);
+            }}
+          />
+          <DropDown getOption={changeType} />
         </TopBox>
-        <OptionBox category={category} />
+        <OptionBox category={question.questionType} idx={idx} />
         <BottomBox>
           <div>복사</div>
           <div>삭제</div>

@@ -1,17 +1,26 @@
-import { useState } from 'react';
 import styled from 'styled-components';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { getDesc, getTitle } from '../store/questionSlice';
+import { useCallback } from 'react';
 
 const Heading = () => {
-  const [title, setTitle] = useState('제목 없는 설문지');
-  const [desc, setDesc] = useState('설문지 설명');
+  const title = useAppSelector((state) => state.survey.title);
+  const desc = useAppSelector((state) => state.survey.desc);
+  const dispatch = useAppDispatch();
 
-  const getTitleChange = (str: string) => {
-    setTitle(str);
-  };
+  const getTitleChange = useCallback(
+    (str: string): void => {
+      dispatch(getTitle(str));
+    },
+    [dispatch],
+  );
 
-  const getDescChange = (str: string) => {
-    setDesc(str);
-  };
+  const getDescChange = useCallback(
+    (str: string): void => {
+      dispatch(getDesc(str));
+    },
+    [dispatch],
+  );
 
   return (
     <>

@@ -1,38 +1,47 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { GrClose } from 'react-icons/gr';
 import { BiCheckbox, BiRadioCircle } from 'react-icons/bi';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { getOpts } from '../store/questionSlice';
+import { useCallback } from 'react';
 
 interface OptionProps {
   category: string;
+  idx: number;
 }
 
-const OptionBox: React.FC<OptionProps> = ({ category }) => {
-  const [options, setOptions] = useState(['옵션 1']);
-
+const OptionBox: React.FC<OptionProps> = ({ category, idx }) => {
   let bodyContent = <ShortOption>단답형 텍스트</ShortOption>;
+  const dispatch = useAppDispatch();
+
+  const options = useAppSelector(
+    (state) => state.survey.questions[idx].options,
+  );
+
+  const changeOption = useCallback(
+    (options: string[]): void => {
+      dispatch(getOpts({ options, idx }));
+    },
+    [dispatch, idx],
+  );
 
   const removeOption = (idx: number) => {
     const current = [...options];
     current.splice(idx, 1);
-    setOptions(current);
+    changeOption(current);
   };
 
   const addOption = () => {
     const current = [...options];
     current.push(`옵션 ${current.length + 1}`);
-    setOptions(current);
+    changeOption(current);
   };
 
   const ChangeOptName = (idx: number, name: string) => {
     const current = [...options];
     current[idx] = name;
-    setOptions(current);
+    changeOption(current);
   };
-
-  useEffect(() => {
-    console.log(options);
-  }, [options]);
 
   const getOptions = () => {
     const current = options;

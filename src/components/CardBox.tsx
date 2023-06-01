@@ -1,13 +1,20 @@
 import styled from 'styled-components';
 import Heading from './Heading';
 import Question from './Qustion';
+import { useAppSelector } from '../store/hooks';
 
 const CardBox = () => {
+  const questions = useAppSelector((state) => state.survey.questions);
+
+  const getQuestions = () => {
+    return questions.map((e, idx) => <Question key={idx} idx={idx} />);
+  };
+
   return (
     <>
       <Container>
         <Heading />
-        <Question />
+        {getQuestions()}
       </Container>
     </>
   );
