@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import Heading from './Heading';
+import Question from './Qustion';
 
 const CardBox = () => {
   return (
     <>
       <Container>
         <Heading />
+        <Question />
       </Container>
     </>
   );
@@ -22,4 +24,5 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  gap: 1rem;
 `;

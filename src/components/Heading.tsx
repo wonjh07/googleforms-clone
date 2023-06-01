@@ -42,7 +42,8 @@ export default Heading;
 
 const Container = styled.div`
   width: 100%;
-  max-width: 1280px;
+  max-width: 960px;
+  min-width: 640px;
   height: auto;
   box-sizing: border-box;
   display: flex;
@@ -59,7 +60,7 @@ const Notch = styled.div`
 
 const InputBox = styled.div`
   width: 100%;
-  padding: 2rem;
+  padding: 1.6rem;
   background-color: white;
   box-sizing: border-box;
   display: flex;
@@ -74,7 +75,7 @@ const Title = styled.input`
   width: 100%;
   box-sizing: border-box;
   border: none;
-  font-size: 2.2rem;
+  font-size: 2rem;
   border-bottom: solid 2px #e0e0e0;
   &:focus {
     outline: none;
