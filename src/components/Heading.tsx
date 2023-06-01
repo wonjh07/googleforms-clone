@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { getDesc, getTitle } from '../store/questionSlice';
+import { setDesc, setTitle } from '../store/questionSlice';
 import { useCallback } from 'react';
 
 const Heading = () => {
@@ -10,14 +10,14 @@ const Heading = () => {
 
   const getTitleChange = useCallback(
     (str: string): void => {
-      dispatch(getTitle(str));
+      dispatch(setTitle(str));
     },
     [dispatch],
   );
 
   const getDescChange = useCallback(
     (str: string): void => {
-      dispatch(getDesc(str));
+      dispatch(setDesc(str));
     },
     [dispatch],
   );

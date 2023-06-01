@@ -1,23 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from 'react-icons/md';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { setType } from '../store/questionSlice';
 
 interface DropDownProps {
-  getOption: (option: string) => void;
+  idx: number;
 }
 
-const DropDown: React.FC<DropDownProps> = ({ getOption }) => {
-  const [category, setCategory] = useState('단답형');
+const DropDown: React.FC<DropDownProps> = ({ idx }) => {
   const [open, setOpen] = useState(false);
+  const dispatch = useAppDispatch();
+  const category = useAppSelector(
+    (state) => state.survey.questions[idx].questionType,
+  );
+
+  const changeType = useCallback(
+    (str: string): void => {
+      dispatch(setType({ str, idx }));
+    },
+    [dispatch, idx],
+  );
 
   const changeOption = (category: string) => {
-    setCategory(category);
+    changeType(category);
     setOpen(false);
   };
-
-  useEffect(() => {
-    getOption(category);
-  }, [category, getOption]);
 
   return (
     <>

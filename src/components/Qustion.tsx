@@ -3,7 +3,11 @@ import DropDown from './DropDown';
 import OptionBox from './OptionBox';
 import { RxDragHandleDots2 } from 'react-icons/rx';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { getQuestionTitle, getType } from '../store/questionSlice';
+import {
+  copyQuestion,
+  deleteQuestion,
+  setQuestionTitle,
+} from '../store/questionSlice';
 import { useCallback } from 'react';
 interface QuestionProps {
   idx: number;
@@ -13,18 +17,25 @@ const Question: React.FC<QuestionProps> = ({ idx }) => {
   const question = useAppSelector((state) => state.survey.questions[idx]);
   const dispatch = useAppDispatch();
 
-  const changeType = useCallback(
+  const changeTitle = useCallback(
     (str: string): void => {
-      dispatch(getType({ str, idx }));
+      dispatch(setQuestionTitle({ str, idx }));
     },
     [dispatch, idx],
   );
 
-  const changeTitle = useCallback(
-    (str: string): void => {
-      dispatch(getQuestionTitle({ str, idx }));
+  const copyQuest = useCallback(
+    (idx: number): void => {
+      dispatch(copyQuestion(idx));
     },
-    [dispatch, idx],
+    [dispatch],
+  );
+
+  const deleteQuest = useCallback(
+    (idx: number): void => {
+      dispatch(deleteQuestion(idx));
+    },
+    [dispatch],
   );
 
   return (
@@ -41,12 +52,12 @@ const Question: React.FC<QuestionProps> = ({ idx }) => {
               changeTitle(e.target.value);
             }}
           />
-          <DropDown getOption={changeType} />
+          <DropDown idx={idx} />
         </TopBox>
         <OptionBox category={question.questionType} idx={idx} />
         <BottomBox>
-          <div>복사</div>
-          <div>삭제</div>
+          <div onClick={() => copyQuest(idx)}>복사</div>
+          <div onClick={() => deleteQuest(idx)}>삭제</div>
           <div>필수</div>
         </BottomBox>
       </Container>

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { GrClose } from 'react-icons/gr';
 import { BiCheckbox, BiRadioCircle } from 'react-icons/bi';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { getOpts } from '../store/questionSlice';
+import { setOpts } from '../store/questionSlice';
 import { useCallback } from 'react';
 
 interface OptionProps {
@@ -20,7 +20,7 @@ const OptionBox: React.FC<OptionProps> = ({ category, idx }) => {
 
   const changeOption = useCallback(
     (options: string[]): void => {
-      dispatch(getOpts({ options, idx }));
+      dispatch(setOpts({ options, idx }));
     },
     [dispatch, idx],
   );

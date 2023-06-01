@@ -34,29 +34,37 @@ export const questionSlice = createSlice({
   name: 'survey',
   initialState: initialState,
   reducers: {
-    getTitle: (state, action: PayloadAction<string>) => {
+    setTitle: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
-      console.log(state.title);
     },
-    getDesc: (state, action: PayloadAction<string>) => {
+    setDesc: (state, action: PayloadAction<string>) => {
       state.desc = action.payload;
-      console.log(state.desc);
     },
-    getType: (state, action: PayloadAction<TypeState>) => {
+    setType: (state, action: PayloadAction<TypeState>) => {
       state.questions[action.payload.idx].questionType = action.payload.str;
-      console.log(state.questions[action.payload.idx].questionType);
     },
-    getQuestionTitle: (state, action: PayloadAction<TypeState>) => {
+    setQuestionTitle: (state, action: PayloadAction<TypeState>) => {
       state.questions[action.payload.idx].questionTitle = action.payload.str;
-      console.log(state.questions[action.payload.idx].questionTitle);
     },
-    getOpts: (state, action: PayloadAction<OptionsState>) => {
+    setOpts: (state, action: PayloadAction<OptionsState>) => {
       state.questions[action.payload.idx].options = action.payload.options;
-      console.log(state.questions[action.payload.idx].options);
+    },
+    copyQuestion: (state, action: PayloadAction<number>) => {
+      state.questions.push(state.questions[action.payload]);
+    },
+    deleteQuestion: (state, action: PayloadAction<number>) => {
+      state.questions.splice(action.payload, 1);
     },
   },
 });
 
-export const { getTitle, getDesc, getType, getQuestionTitle, getOpts } =
-  questionSlice.actions;
+export const {
+  setTitle,
+  setDesc,
+  setType,
+  setQuestionTitle,
+  setOpts,
+  copyQuestion,
+  deleteQuestion,
+} = questionSlice.actions;
 export default questionSlice.reducer;
