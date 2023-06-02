@@ -39,28 +39,29 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 `;
 
 const Toggle = styled.div<{ checked: boolean }>`
   cursor: pointer;
-  height: 1rem;
-  width: 2.6rem;
-  background: ${(props) => (props.checked ? '#d9caf8' : '#717579')};
+  height: 16px;
+  width: 42px;
+  background: ${(props) => (props.checked ? '#d9caf8' : '#B9B9B9')};
   display: block;
   border-radius: 100px;
   position: relative;
+  box-sizing: border-box;
 
   &:after {
     content: '';
     position: absolute;
-    top: -0.14rem;
-    left: 4px;
-    width: 1.3rem;
-    height: 1.3rem;
+    top: -4px;
+    width: 22px;
+    height: 22px;
     background: ${(props) => (props.checked ? '#613CB0' : 'white')};
     border-radius: 90px;
     transition: 0.3s;
-    box-shadow: 0px 2px 4px 0px #606367;
-    transform: ${(props) => (props.checked ? 'translateX(60%)' : '')};
+    box-shadow: 0px 2px 4px 0px #717579;
+    transform: ${(props) => (props.checked ? 'translateX(100%)' : '')};
   }
 `;

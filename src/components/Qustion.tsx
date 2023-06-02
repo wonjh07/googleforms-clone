@@ -4,6 +4,7 @@ import OptionBox from './OptionBox';
 import { RxDragHandleDots2 } from 'react-icons/rx';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { MdContentCopy, MdOutlineDelete } from 'react-icons/md';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 import {
   copyQuestion,
   deleteQuestion,
@@ -61,10 +62,10 @@ const Question: React.FC<QuestionProps> = ({ idx }) => {
           <LeftBox>
             <MdContentCopy
               style={{ cursor: 'pointer' }}
-              size={20}
+              size={22}
               onClick={() => copyQuest(idx)}
             />
-            <MdOutlineDelete
+            <RiDeleteBin6Line
               style={{ cursor: 'pointer' }}
               size={24}
               onClick={() => deleteQuest(idx)}
