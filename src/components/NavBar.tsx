@@ -1,15 +1,23 @@
 import styled from 'styled-components';
 import icon from '../assets/google_forms.svg';
 import { AiOutlineEye } from 'react-icons/ai';
+import { useAppSelector } from '../store/hooks';
 
 const NavBar = () => {
+  const survey = useAppSelector((state) => state.survey);
+
+  const getSurvey = () => {
+    console.log(survey);
+  };
+
   return (
     <>
       <NavContainer>
         <Icon src={icon} />
         <Title>Google Forms Clone</Title>
-        <AiOutlineEye size={30} />
+        <PreviewBtn size={30} onClick={getSurvey} />
       </NavContainer>
+      <Margin />
     </>
   );
 };
@@ -17,6 +25,7 @@ const NavBar = () => {
 export default NavBar;
 
 const NavContainer = styled.div`
+  position: fixed;
   width: 100%;
   height: 4rem;
   padding: 0.6rem 2rem;
@@ -36,4 +45,13 @@ const Icon = styled.img`
 
 const Title = styled.p`
   font-size: 1.2rem;
+`;
+
+const Margin = styled.div`
+  width: 100%;
+  height: 4rem;
+`;
+
+const PreviewBtn = styled(AiOutlineEye)`
+  cursor: pointer;
 `;

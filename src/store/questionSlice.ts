@@ -69,6 +69,9 @@ export const questionSlice = createSlice({
     deleteQuestion: (state, action: PayloadAction<number>) => {
       state.questions.splice(action.payload, 1);
     },
+    setNewQuestion: (state) => {
+      state.questions.push(initialState.questions[0]);
+    },
   },
 });
 
@@ -81,5 +84,6 @@ export const {
   setEssential,
   copyQuestion,
   deleteQuestion,
+  setNewQuestion,
 } = questionSlice.actions;
 export default questionSlice.reducer;

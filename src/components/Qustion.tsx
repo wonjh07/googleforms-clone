@@ -3,7 +3,7 @@ import DropDown from './DropDown';
 import OptionBox from './OptionBox';
 import { RxDragHandleDots2 } from 'react-icons/rx';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { MdContentCopy, MdOutlineDelete } from 'react-icons/md';
+import { MdContentCopy } from 'react-icons/md';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import {
   copyQuestion,
