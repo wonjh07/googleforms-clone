@@ -1,22 +1,18 @@
 import styled from 'styled-components';
-import NavBar from './NavBar';
-import CardBox from './CardBox';
-import SideMenu from './SideMenu';
+import PreCardBox from './PreCardBox';
 
-const Survey = () => {
+const Preview = () => {
   return (
     <>
       <Container>
-        <NavBar />
-        <SideMenu />
-        <CardBox />
+        <PreCardBox />
         <Footer />
       </Container>
     </>
   );
 };
 
-export default Survey;
+export default Preview;
 
 const Container = styled.div`
   width: 100%;

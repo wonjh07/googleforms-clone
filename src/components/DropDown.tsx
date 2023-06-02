@@ -38,7 +38,7 @@ const DropDown: React.FC<DropDownProps> = ({ idx }) => {
   const getCategoryCard = (ctg: string) => {
     if (ctg === '단답형') {
       return (
-        <OptionCard onClick={() => changeOption('단답형')}>
+        <OptionCard id="option1" onClick={() => changeOption('단답형')}>
           <Icon>
             <MdShortText size={28} />
           </Icon>
@@ -49,7 +49,7 @@ const DropDown: React.FC<DropDownProps> = ({ idx }) => {
 
     if (ctg === '장문형') {
       return (
-        <OptionCard onClick={() => changeOption('장문형')}>
+        <OptionCard id="option2" onClick={() => changeOption('장문형')}>
           <Icon>
             <GrTextAlignFull size={22} />
           </Icon>
@@ -60,7 +60,7 @@ const DropDown: React.FC<DropDownProps> = ({ idx }) => {
 
     if (ctg === '객관식 질문') {
       return (
-        <OptionCard onClick={() => changeOption('객관식 질문')}>
+        <OptionCard id="option3" onClick={() => changeOption('객관식 질문')}>
           <Icon>
             <ImRadioChecked size={22} />
           </Icon>
@@ -71,7 +71,7 @@ const DropDown: React.FC<DropDownProps> = ({ idx }) => {
 
     if (ctg === '체크박스') {
       return (
-        <OptionCard onClick={() => changeOption('체크박스')}>
+        <OptionCard id="option4" onClick={() => changeOption('체크박스')}>
           <Icon>
             <BiCheckSquare size={26} />
           </Icon>
@@ -82,7 +82,7 @@ const DropDown: React.FC<DropDownProps> = ({ idx }) => {
 
     if (ctg === '드롭다운') {
       return (
-        <OptionCard onClick={() => changeOption('드롭다운')}>
+        <OptionCard id="option5" onClick={() => changeOption('드롭다운')}>
           <Icon>
             <IoIosArrowDropdown size={26} />
           </Icon>
@@ -109,13 +109,15 @@ const DropDown: React.FC<DropDownProps> = ({ idx }) => {
           </Arrow>
         </CurrentOption>
         {open && (
-          <AllOptions>
-            {getCategoryCard('단답형')}
-            {getCategoryCard('장문형')}
-            {getCategoryCard('객관식 질문')}
-            {getCategoryCard('체크박스')}
-            {getCategoryCard('드롭다운')}
-          </AllOptions>
+          <>
+            <AllOptions>
+              {getCategoryCard('단답형')}
+              {getCategoryCard('장문형')}
+              {getCategoryCard('객관식 질문')}
+              {getCategoryCard('체크박스')}
+              {getCategoryCard('드롭다운')}
+            </AllOptions>
+          </>
         )}
       </Container>
     </>
@@ -146,8 +148,9 @@ const CurrentOption = styled.div`
 
 const Arrow = styled.div`
   position: absolute;
-  transform: translateX(1000%);
+  transform: translateX(950%);
   color: #717579;
+  pointer-events: none;
 `;
 
 const AllOptions = styled.div`

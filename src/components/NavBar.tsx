@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 import icon from '../assets/google_forms.svg';
 import { AiOutlineEye } from 'react-icons/ai';
-import { useAppSelector } from '../store/hooks';
+import { useAppDispatch } from '../store/hooks';
+import { openPreview } from '../store/previewSlice';
 
 const NavBar = () => {
-  const survey = useAppSelector((state) => state.survey);
+  const dispatch = useAppDispatch();
 
-  const getSurvey = () => {
-    console.log(survey);
+  const getPreview = () => {
+    dispatch(openPreview());
   };
 
   return (
@@ -15,7 +16,7 @@ const NavBar = () => {
       <NavContainer>
         <Icon src={icon} />
         <Title>Google Forms Clone</Title>
-        <PreviewBtn size={30} onClick={getSurvey} />
+        <PreviewBtn size={30} onClick={getPreview} />
       </NavContainer>
       <Margin />
     </>
