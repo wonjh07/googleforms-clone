@@ -4,6 +4,7 @@ export interface QuestionState {
   questionTitle: string;
   questionType: string;
   options: string[];
+  essential: boolean;
 }
 
 interface SurveyState {
@@ -22,11 +23,21 @@ interface OptionsState {
   idx: number;
 }
 
+interface EssentialState {
+  essential: boolean;
+  idx: number;
+}
+
 const initialState: SurveyState = {
   title: '제목 없는 설문지',
   desc: '설문지 설명',
   questions: [
-    { questionTitle: '', questionType: '단답형', options: ['옵션 1'] },
+    {
+      questionTitle: '',
+      questionType: '단답형',
+      options: ['옵션 1'],
+      essential: false,
+    },
   ],
 };
 
@@ -49,6 +60,9 @@ export const questionSlice = createSlice({
     setOpts: (state, action: PayloadAction<OptionsState>) => {
       state.questions[action.payload.idx].options = action.payload.options;
     },
+    setEssential: (state, action: PayloadAction<EssentialState>) => {
+      state.questions[action.payload.idx].essential = action.payload.essential;
+    },
     copyQuestion: (state, action: PayloadAction<number>) => {
       state.questions.push(state.questions[action.payload]);
     },
@@ -64,6 +78,7 @@ export const {
   setType,
   setQuestionTitle,
   setOpts,
+  setEssential,
   copyQuestion,
   deleteQuestion,
 } = questionSlice.actions;

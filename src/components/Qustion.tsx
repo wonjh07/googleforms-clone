@@ -3,12 +3,14 @@ import DropDown from './DropDown';
 import OptionBox from './OptionBox';
 import { RxDragHandleDots2 } from 'react-icons/rx';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { MdContentCopy, MdOutlineDelete } from 'react-icons/md';
 import {
   copyQuestion,
   deleteQuestion,
   setQuestionTitle,
 } from '../store/questionSlice';
 import { useCallback } from 'react';
+import ToggleBox from './ToggleBox';
 interface QuestionProps {
   idx: number;
 }
@@ -56,9 +58,22 @@ const Question: React.FC<QuestionProps> = ({ idx }) => {
         </TopBox>
         <OptionBox category={question.questionType} idx={idx} />
         <BottomBox>
-          <div onClick={() => copyQuest(idx)}>복사</div>
-          <div onClick={() => deleteQuest(idx)}>삭제</div>
-          <div>필수</div>
+          <LeftBox>
+            <MdContentCopy
+              style={{ cursor: 'pointer' }}
+              size={20}
+              onClick={() => copyQuest(idx)}
+            />
+            <MdOutlineDelete
+              style={{ cursor: 'pointer' }}
+              size={24}
+              onClick={() => deleteQuest(idx)}
+            />
+          </LeftBox>
+          <RightBox>
+            <p>필수</p>
+            <ToggleBox idx={idx} />
+          </RightBox>
         </BottomBox>
       </Container>
     </>
@@ -101,13 +116,15 @@ const TopBox = styled.div`
 
 const BottomBox = styled.div`
   width: 100%;
+  height: 5rem;
   border-top: 1px solid #e0e0e0;
   box-sizing: border-box;
-  padding: 1.6rem;
+  padding: 1.4rem;
   display: flex;
   gap: 1.2rem;
   flex-direction: row;
   justify-content: end;
+  align-items: center;
 `;
 
 const QuestionTitle = styled.input`
@@ -127,4 +144,26 @@ const QuestionTitle = styled.input`
   &:hover {
     background-color: #f1f3f4;
   }
+`;
+
+const LeftBox = styled.div`
+  width: auto;
+  height: 100%;
+  gap: 1rem;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid #a1a2a3;
+  color: #717579;
+`;
+
+const RightBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.9rem;
 `;

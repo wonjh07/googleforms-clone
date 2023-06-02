@@ -85,10 +85,13 @@ const Title = styled.input`
   box-sizing: border-box;
   border: none;
   font-size: 2rem;
-  border-bottom: solid 2px #e0e0e0;
+  border-bottom: solid 1px #e0e0e0;
+  padding-bottom: 0.5rem;
+
   &:focus {
     outline: none;
     border-bottom: solid 2px #613cb0;
+    margin-bottom: -1px;
   }
 `;
 
@@ -97,11 +100,14 @@ const Desc = styled.input`
   box-sizing: border-box;
   padding-top: 1rem;
   font-size: 1rem;
+  padding-bottom: 0.5rem;
   border: none;
-  border-bottom: solid 2px #e0e0e0;
+  border-bottom: solid 1px #e0e0e0;
   color: #717579;
+
   &:focus {
     outline: none;
     border-bottom: solid 2px #613cb0;
+    margin-bottom: -1px;
   }
 `;

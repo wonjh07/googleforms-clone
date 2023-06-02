@@ -170,6 +170,7 @@ const OptionAdd = styled.p`
   padding: 0.5rem 0;
   &:hover {
     border-bottom: solid 1px gray;
+    margin-bottom: -1px;
   }
 `;
 

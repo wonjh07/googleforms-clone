@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import NavBar from './navbar/NavBar';
+import NavBar from './NavBar';
 import CardBox from './CardBox';
 import SideMenu from './SideMenu';
 
@@ -10,6 +10,7 @@ const Survey = () => {
         <NavBar />
         <SideMenu />
         <CardBox />
+        <Footer />
       </Container>
     </>
   );
@@ -22,4 +23,9 @@ const Container = styled.div`
   height: 100%;
   min-height: 100vh;
   background-color: #efebf7;
+`;
+
+const Footer = styled.div`
+  width: 100%;
+  height: 100px;
 `;

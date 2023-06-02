@@ -97,6 +97,7 @@ const AllOptions = styled.div`
   box-sizing: border-box;
   overflow: hidden;
   background-color: white;
+  z-index: 10;
 `;
 
 const OptionCard = styled.div`
