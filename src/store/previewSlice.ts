@@ -5,8 +5,13 @@ export interface PreviewState {
   data: any;
 }
 
-export interface AnswerState {
+export interface InitAnswerState {
   data: any;
+}
+
+export interface AnswerState {
+  idx: number;
+  answer: any;
 }
 
 const initialState: PreviewState = {
@@ -24,11 +29,24 @@ export const previewSlice = createSlice({
     closePreview: (state) => {
       state.open = false;
     },
-    setAnswers: (state, action: PayloadAction<AnswerState>) => {
+    initAnswers: (state, action: PayloadAction<InitAnswerState>) => {
       state.data = action.payload;
+    },
+    setAnswers: (state, action: PayloadAction<AnswerState>) => {
+      state.data[action.payload.idx] = action.payload.answer;
+    },
+    setMultiAnswers: (state, action: PayloadAction<AnswerState>) => {
+      state.data[action.payload.idx][action.payload.answer] =
+        !state.data[action.payload.idx][action.payload.answer];
     },
   },
 });
 
-export const { openPreview, closePreview, setAnswers } = previewSlice.actions;
+export const {
+  openPreview,
+  closePreview,
+  initAnswers,
+  setAnswers,
+  setMultiAnswers,
+} = previewSlice.actions;
 export default previewSlice.reducer;

@@ -1,9 +1,16 @@
 import styled from 'styled-components';
-import { useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useCallback } from 'react';
+import { closePreview } from '../../store/previewSlice';
 
 const PreHeading = () => {
   const title = useAppSelector((state) => state.survey.title);
   const desc = useAppSelector((state) => state.survey.desc);
+  const dispatch = useAppDispatch();
+
+  const quitPreview = useCallback(() => {
+    dispatch(closePreview());
+  }, [dispatch]);
 
   return (
     <>
@@ -12,7 +19,10 @@ const PreHeading = () => {
         <InputBox>
           <Title>{title}</Title>
           <Desc>{desc}</Desc>
-          <UserInfoBox>* 필수항목</UserInfoBox>
+          <UserInfoBox>
+            <Warn>* 필수항목</Warn>
+            <Close onClick={quitPreview}>미리보기 종료</Close>
+          </UserInfoBox>
         </InputBox>
       </Container>
     </>
@@ -23,7 +33,7 @@ export default PreHeading;
 
 const Container = styled.div`
   width: 100%;
-  max-width: 960px;
+  max-width: 720px;
   min-width: 640px;
   height: auto;
   box-sizing: border-box;
@@ -69,12 +79,27 @@ const Desc = styled.div`
 
 const UserInfoBox = styled.div`
   width: 100%;
-  height: 100px;
   border-top: 1px solid #e0e0e0;
   box-sizing: border-box;
-  padding: 1.6rem;
+  padding: 1rem;
   display: flex;
-  flex-direction: column;
-  justify-content: end;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: end;
+`;
+
+const Warn = styled.div`
   color: #d63725;
+  padding: 0.6rem;
+`;
+
+const Close = styled.div`
+  cursor: pointer;
+  color: #613cb0;
+  padding: 0.6rem;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
 `;
