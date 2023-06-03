@@ -36,27 +36,25 @@ const FlexBox = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  z-index: 0;
+  pointer-events: none;
 `;
 
 const LeftPadding = styled.div`
   width: 14rem;
-  height: 100px;
 `;
 const RightPadding = styled.div`
   width: 14rem;
-  height: 100px;
 `;
 
 const Center = styled.div`
   width: 100%;
-  height: 100px;
   max-width: 960px;
   min-width: 640px;
 `;
 
 const Container = styled.div`
   display: flex;
+  position: relative;
   justify-content: center;
   align-items: center;
   width: 50px;
@@ -68,6 +66,7 @@ const Container = styled.div`
   color: #717579;
   transition: 0.4s;
   margin-left: 1rem;
+  pointer-events: auto;
 `;
 
 const CreateBtn = styled(AiOutlinePlusCircle)`

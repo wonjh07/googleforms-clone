@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { useAppSelector } from '../../store/hooks';
-import { Link } from 'react-router-dom';
 
-const PreHeading = () => {
+const ResultHeading = () => {
   const title = useAppSelector((state) => state.survey.title);
   const desc = useAppSelector((state) => state.survey.desc);
 
@@ -14,8 +13,7 @@ const PreHeading = () => {
           <Title>{title}</Title>
           <Desc>{desc}</Desc>
           <UserInfoBox>
-            <Warn>* 필수항목</Warn>
-            <Close to="/">미리보기 종료</Close>
+            <Warn>* 표시는 필수 질문임</Warn>
           </UserInfoBox>
         </InputBox>
       </Container>
@@ -23,7 +21,7 @@ const PreHeading = () => {
   );
 };
 
-export default PreHeading;
+export default ResultHeading;
 
 const Container = styled.div`
   width: 100%;
@@ -85,16 +83,4 @@ const UserInfoBox = styled.div`
 const Warn = styled.div`
   color: #d63725;
   padding: 0.6rem;
-`;
-
-const Close = styled(Link)`
-  cursor: pointer;
-  color: #613cb0;
-  padding: 0.6rem;
-  border-radius: 4px;
-  text-decoration: none;
-
-  &:hover {
-    background-color: #e0e0e0;
-  }
 `;

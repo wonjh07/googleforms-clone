@@ -1,15 +1,13 @@
-import Survey from './components/Survey';
-import Preview from './components/preview/Preview';
-import { useAppSelector } from './store/hooks';
+import { BrowserRouter } from 'react-router-dom';
+import Router from './routes';
 import './style/global.css';
 
 function App() {
-  const isOpen = useAppSelector((state) => state.preview.open);
-
   return (
     <>
-      {isOpen && <Preview />}
-      {!isOpen && <Survey />}
+      <BrowserRouter>
+        <Router />
+      </BrowserRouter>
     </>
   );
 }

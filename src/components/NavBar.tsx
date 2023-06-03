@@ -1,22 +1,17 @@
 import styled from 'styled-components';
 import icon from '../assets/google_forms.svg';
 import { AiOutlineEye } from 'react-icons/ai';
-import { useAppDispatch } from '../store/hooks';
-import { openPreview } from '../store/previewSlice';
+import { Link } from 'react-router-dom';
 
 const NavBar = () => {
-  const dispatch = useAppDispatch();
-
-  const getPreview = () => {
-    dispatch(openPreview());
-  };
-
   return (
     <>
       <NavContainer>
         <Icon src={icon} />
         <Title>Google Forms Clone</Title>
-        <PreviewBtn size={30} onClick={getPreview} />
+        <Link to="/preview">
+          <PreviewBtn size={30} />
+        </Link>
       </NavContainer>
       <Margin />
     </>

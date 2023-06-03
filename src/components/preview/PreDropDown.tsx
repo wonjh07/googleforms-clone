@@ -113,7 +113,7 @@ const AllOptions = styled.div`
   box-sizing: border-box;
   overflow: hidden;
   background-color: white;
-  z-index: 10;
+  z-index: 20;
 `;
 
 const OptionCard = styled.div`

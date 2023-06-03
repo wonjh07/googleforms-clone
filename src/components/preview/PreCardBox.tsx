@@ -4,10 +4,10 @@ import PreQuestion from './PreQuestion';
 import PreHeading from './PreHeading';
 import { initAnswers } from '../../store/previewSlice';
 import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const PreCardBox = () => {
   const questions = useAppSelector((state) => state.survey.questions);
-  const answers = useAppSelector((state) => state.preview.data);
   const [reset, setReset] = useState(true);
   const dispatch = useAppDispatch();
 
@@ -39,7 +39,6 @@ const PreCardBox = () => {
 
   useEffect(() => {
     if (reset) {
-      console.log('reset');
       getAnswerSheet();
       setReset(false);
     }
@@ -51,12 +50,7 @@ const PreCardBox = () => {
         <PreHeading />
         {!reset && getQuestions()}
         <BottomBox>
-          <Submit
-            onClick={() => {
-              console.log(answers);
-            }}>
-            제출
-          </Submit>
+          <Submit to="/result">제출</Submit>
           <RemoveAnswer onClick={() => setReset(true)}>
             양식 지우기
           </RemoveAnswer>
@@ -90,13 +84,14 @@ const BottomBox = styled.div`
   align-items: start;
 `;
 
-const Submit = styled.div`
+const Submit = styled(Link)`
   cursor: pointer;
   color: white;
   padding: 0.6rem 1.4rem;
   border-radius: 4px;
   background-color: #613cb0;
   font-size: 0.9rem;
+  text-decoration: none;
 
   &:hover {
     opacity: 0.9;
