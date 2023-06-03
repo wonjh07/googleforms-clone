@@ -144,13 +144,16 @@ const CurrentOption = styled.div`
   flex-direction: row;
   justify-content: start;
   align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: #f1f3f4;
+  }
 `;
 
 const Arrow = styled.div`
-  position: absolute;
-  transform: translateX(950%);
   color: #717579;
   pointer-events: none;
+  padding-right: 1rem;
 `;
 
 const AllOptions = styled.div`

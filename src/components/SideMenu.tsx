@@ -9,23 +9,53 @@ const SideMenu = () => {
   const newQuest = useCallback(() => dispatch(setNewQuestion()), [dispatch]);
   return (
     <>
-      <Container>
-        <CreateBtn
-          onClick={() => {
-            newQuest();
-          }}
-        />
-      </Container>
+      <FlexBox>
+        <LeftPadding />
+        <Center />
+        <RightPadding>
+          <Container>
+            <CreateBtn
+              onClick={() => {
+                newQuest();
+              }}
+            />
+          </Container>
+        </RightPadding>
+      </FlexBox>
     </>
   );
 };
 
 export default SideMenu;
 
-const Container = styled.div`
+const FlexBox = styled.div`
+  width: 100%;
   position: fixed;
   top: 5rem;
-  right: 6rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  z-index: 0;
+`;
+
+const LeftPadding = styled.div`
+  width: 14rem;
+  height: 100px;
+`;
+const RightPadding = styled.div`
+  width: 14rem;
+  height: 100px;
+`;
+
+const Center = styled.div`
+  width: 100%;
+  height: 100px;
+  max-width: 960px;
+  min-width: 640px;
+`;
+
+const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,6 +67,7 @@ const Container = styled.div`
   box-shadow: 0px 2px 4px 0px #e0e0e0;
   color: #717579;
   transition: 0.4s;
+  margin-left: 1rem;
 `;
 
 const CreateBtn = styled(AiOutlinePlusCircle)`

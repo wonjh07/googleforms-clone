@@ -37,6 +37,7 @@ const NavContainer = styled.div`
   background-color: white;
   box-sizing: border-box;
   box-shadow: 0px 2px 4px 0px #e0e0e0;
+  z-index: 10;
 `;
 
 const Icon = styled.img`

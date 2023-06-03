@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -75,7 +75,7 @@ const PreDropDown: React.FC<DropDownProps> = ({ idx }) => {
 export default PreDropDown;
 
 const Container = styled.div`
-  width: 30%;
+  width: 50%;
   height: 3rem;
   box-sizing: border-box;
   user-select: none;
@@ -92,13 +92,16 @@ const CurrentOption = styled.div`
   flex-direction: row;
   justify-content: start;
   align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: #f1f3f4;
+  }
 `;
 
 const Arrow = styled.div`
-  position: absolute;
-  transform: translateX(700%);
   color: #717579;
   pointer-events: none;
+  padding-right: 1rem;
 `;
 
 const AllOptions = styled.div`

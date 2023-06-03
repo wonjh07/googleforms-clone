@@ -3,11 +3,12 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import PreQuestion from './PreQuestion';
 import PreHeading from './PreHeading';
 import { initAnswers } from '../../store/previewSlice';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const PreCardBox = () => {
   const questions = useAppSelector((state) => state.survey.questions);
   const answers = useAppSelector((state) => state.preview.data);
+  const [reset, setReset] = useState(true);
   const dispatch = useAppDispatch();
 
   const getQuestions = () => {
@@ -21,30 +22,34 @@ const PreCardBox = () => {
     [dispatch],
   );
 
-  useEffect(() => {
-    const getAnswerSheet = () => {
-      const temp = questions.map((e) => {
-        if (e.questionType === '체크박스') {
-          const multi: any = {};
-          e.options.map((opt) => {
-            multi[opt] = false;
-          });
-          return multi;
-        } else {
-          return '';
-        }
-      });
-      resetAnswer(temp);
-    };
-
-    getAnswerSheet();
+  const getAnswerSheet = useCallback(() => {
+    const temp = questions.map((e) => {
+      if (e.questionType === '체크박스') {
+        const multi: any = {};
+        e.options.map((opt) => {
+          multi[opt] = false;
+        });
+        return multi;
+      } else {
+        return '';
+      }
+    });
+    resetAnswer(temp);
   }, [questions, resetAnswer]);
+
+  useEffect(() => {
+    if (reset) {
+      console.log('reset');
+      getAnswerSheet();
+      setReset(false);
+    }
+  }, [getAnswerSheet, reset]);
 
   return (
     <>
       <Container>
         <PreHeading />
-        {getQuestions()}
+        {!reset && getQuestions()}
         <BottomBox>
           <Submit
             onClick={() => {
@@ -52,7 +57,9 @@ const PreCardBox = () => {
             }}>
             제출
           </Submit>
-          <RemoveAnswer>양식 지우기</RemoveAnswer>
+          <RemoveAnswer onClick={() => setReset(true)}>
+            양식 지우기
+          </RemoveAnswer>
         </BottomBox>
       </Container>
     </>
