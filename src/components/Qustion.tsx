@@ -22,9 +22,12 @@ const Question: React.FC<QuestionProps> = ({ idx }) => {
   const focused = useAppSelector((state) => state.survey.focus);
   const [selected, setSelected] = useState(false);
   const dispatch = useAppDispatch();
-  const focusOnHere = () => {
-    dispatch(focusOn(idx));
-  };
+
+  const focusOnHere = useCallback(() => {
+    if (!selected) {
+      dispatch(focusOn(idx));
+    }
+  }, [dispatch, idx, selected]);
 
   useEffect(() => {
     if (focused === idx) {
@@ -46,17 +49,12 @@ const Question: React.FC<QuestionProps> = ({ idx }) => {
   }, [dispatch]);
 
   const deleteQuest = useCallback(() => {
-    dispatch(deleteQuestion(idx));
-  }, [dispatch, idx]);
+    dispatch(deleteQuestion());
+  }, [dispatch]);
 
   return (
     <>
-      <Container
-        onClick={(e: any) => {
-          if (e.target.id !== 'notFocus') {
-            focusOnHere();
-          }
-        }}>
+      <Container onClick={() => focusOnHere()}>
         <SelectedBox selected={selected}>
           <Drag>
             <RxDragHandleDots2
@@ -90,12 +88,10 @@ const Question: React.FC<QuestionProps> = ({ idx }) => {
                 <MdContentCopy
                   style={{ cursor: 'pointer' }}
                   size={22}
-                  id="notFocus"
                   onClick={() => copyQuest()}
                 />
                 <RiDeleteBin6Line
                   style={{ cursor: 'pointer' }}
-                  id="notFocus"
                   size={24}
                   onClick={() => deleteQuest()}
                 />
@@ -125,6 +121,9 @@ const Container = styled.div`
   border-radius: 10px;
   border: 1px solid #e0e0e0;
   overflow: hidden;
+  animation-name: PopUp;
+  animation-duration: 0.4s;
+  animation-timing-function: ease-in-out;
 `;
 
 const SelectedBox = styled.div<{ selected: boolean }>`
@@ -132,7 +131,7 @@ const SelectedBox = styled.div<{ selected: boolean }>`
   padding: 0 1.1rem;
   box-sizing: border-box;
   border-left: 0.5rem solid ${(props) => (props.selected ? '#5383ec' : 'white')};
-  border-right: 0.5rem solid 'white';
+  border-right: 0.5rem solid white;
 `;
 
 const Drag = styled.div`

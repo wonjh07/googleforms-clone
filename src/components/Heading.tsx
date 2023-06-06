@@ -39,7 +39,7 @@ const Heading = () => {
     <>
       <Container onClick={() => focusOnHere()}>
         <Notch />
-        <FlexBox>
+        <FlexBox selected={selected}>
           <InputBox selected={selected}>
             <Title
               selected={selected}
@@ -75,6 +75,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
 `;
 
 const Notch = styled.div`
@@ -84,7 +86,7 @@ const Notch = styled.div`
   border-radius: 10px 10px 0 0;
 `;
 
-const FlexBox = styled.div`
+const FlexBox = styled.div<{ selected: boolean }>`
   width: 100%;
   box-sizing: border-box;
   border-top: 0px;

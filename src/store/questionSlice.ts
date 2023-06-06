@@ -3,6 +3,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 export interface QuestionState {
   questionTitle: string;
   questionType: string;
+  id: string;
   options: string[];
   essential: boolean;
 }
@@ -34,6 +35,7 @@ const initialState: SurveyState = {
     {
       questionTitle: '',
       questionType: '단답형',
+      id: Math.random().toString(36).substring(7),
       options: ['옵션 1'],
       essential: false,
     },
@@ -64,15 +66,21 @@ export const questionSlice = createSlice({
         !state.questions[action.payload].essential;
     },
     copyQuestion: (state) => {
-      state.questions.splice(state.focus + 1, 0, state.questions[state.focus]);
+      const copyQuest = { ...state.questions[state.focus] };
+      copyQuest.id = Math.random().toString(36).substring(7);
+      state.questions.splice(state.focus + 1, 0, copyQuest);
       state.focus += 1;
     },
-    deleteQuestion: (state, action: PayloadAction<number>) => {
-      state.questions.splice(action.payload, 1);
-      state.focus -= 1;
+    deleteQuestion: (state) => {
+      state.questions.splice(state.focus, 1);
+      if (state.questions.length === state.focus) {
+        state.focus -= 1;
+      }
     },
     setNewQuestion: (state) => {
-      state.questions.splice(state.focus + 1, 0, initialState.questions[0]);
+      const newQuest = { ...initialState.questions[0] };
+      newQuest.id = Math.random().toString(36).substring(7);
+      state.questions.splice(state.focus + 1, 0, newQuest);
       state.focus += 1;
     },
     focusOn: (state, action: PayloadAction<number>) => {
