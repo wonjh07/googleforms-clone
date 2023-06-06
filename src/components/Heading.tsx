@@ -1,47 +1,64 @@
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { setDesc, setTitle } from '../store/questionSlice';
-import { useCallback } from 'react';
+import { focusOn, setDesc, setTitle } from '../store/questionSlice';
+import { useCallback, useEffect, useState } from 'react';
 
 const Heading = () => {
   const title = useAppSelector((state) => state.survey.title);
   const desc = useAppSelector((state) => state.survey.desc);
+  const focused = useAppSelector((state) => state.survey.focus);
+  const [selected, setSelected] = useState(false);
   const dispatch = useAppDispatch();
+  const focusOnHere = () => {
+    dispatch(focusOn(-1));
+  };
 
   const getTitleChange = useCallback(
-    (str: string): void => {
+    (str: string) => {
       dispatch(setTitle(str));
     },
     [dispatch],
   );
 
   const getDescChange = useCallback(
-    (str: string): void => {
+    (str: string) => {
       dispatch(setDesc(str));
     },
     [dispatch],
   );
 
+  useEffect(() => {
+    if (focused === -1) {
+      setSelected(true);
+    } else {
+      setSelected(false);
+    }
+  }, [focused]);
+
   return (
     <>
-      <Container>
+      <Container onClick={() => focusOnHere()}>
         <Notch />
-        <InputBox>
-          <Title
-            type="text"
-            defaultValue={title}
-            onChange={(e) => {
-              getTitleChange(e.target.value);
-            }}
-          />
-          <Desc
-            type="text"
-            defaultValue={desc}
-            onChange={(e) => {
-              getDescChange(e.target.value);
-            }}
-          />
-        </InputBox>
+        <FlexBox>
+          <InputBox selected={selected}>
+            <Title
+              selected={selected}
+              type="text"
+              defaultValue={title}
+              onChange={(e) => {
+                getTitleChange(e.target.value);
+              }}
+            />
+            <Desc
+              type="text"
+              selected={selected}
+              defaultValue={desc}
+              onChange={(e) => {
+                getDescChange(e.target.value);
+              }}
+            />
+          </InputBox>
+        </FlexBox>
       </Container>
     </>
   );
@@ -67,27 +84,32 @@ const Notch = styled.div`
   border-radius: 10px 10px 0 0;
 `;
 
-const InputBox = styled.div`
+const FlexBox = styled.div`
   width: 100%;
-  padding: 1.6rem;
+  box-sizing: border-box;
+  border-top: 0px;
+  overflow: hidden;
+  border-radius: 0 0 10px 10px;
+`;
+
+const InputBox = styled.div<{ selected: boolean }>`
+  width: 100%;
+  padding: 1.6rem 1.1rem;
   background-color: white;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  border: 1px solid #e0e0e0;
-  border-top: 0px;
-  border-radius: 0 0 10px 10px;
+  gap: 2px;
+  border-left: 0.5rem solid ${(props) => (props.selected ? '#5383ec' : 'white')};
 `;
 
-const Title = styled.input`
+const Title = styled.input<{ selected: boolean }>`
   width: 100%;
   box-sizing: border-box;
   border: none;
   font-size: 2rem;
-  border-bottom: solid 1px #e0e0e0;
+  border-bottom: solid 1px ${(props) => (props.selected ? '#e0e0e0;' : 'white')};
   padding-bottom: 0.5rem;
-
   &:focus {
     outline: none;
     border-bottom: solid 2px #613cb0;
@@ -95,14 +117,14 @@ const Title = styled.input`
   }
 `;
 
-const Desc = styled.input`
+const Desc = styled.input<{ selected: boolean }>`
   width: 100%;
   box-sizing: border-box;
   padding-top: 1rem;
   font-size: 1rem;
   padding-bottom: 0.5rem;
   border: none;
-  border-bottom: solid 1px #e0e0e0;
+  border-bottom: solid 1px ${(props) => (props.selected ? '#e0e0e0;' : 'white')};
   color: #717579;
 
   &:focus {

@@ -10,6 +10,8 @@ export interface QuestionState {
 interface SurveyState {
   title: string;
   desc: string;
+  status: 'home' | 'preview' | 'result';
+  focus: number;
   questions: QuestionState[];
 }
 
@@ -23,14 +25,11 @@ interface OptionsState {
   idx: number;
 }
 
-interface EssentialState {
-  essential: boolean;
-  idx: number;
-}
-
 const initialState: SurveyState = {
   title: '제목 없는 설문지',
   desc: '설문지 설명',
+  status: 'home',
+  focus: 0,
   questions: [
     {
       questionTitle: '',
@@ -60,17 +59,24 @@ export const questionSlice = createSlice({
     setOpts: (state, action: PayloadAction<OptionsState>) => {
       state.questions[action.payload.idx].options = action.payload.options;
     },
-    setEssential: (state, action: PayloadAction<EssentialState>) => {
-      state.questions[action.payload.idx].essential = action.payload.essential;
+    setEssential: (state, action: PayloadAction<number>) => {
+      state.questions[action.payload].essential =
+        !state.questions[action.payload].essential;
     },
-    copyQuestion: (state, action: PayloadAction<number>) => {
-      state.questions.push(state.questions[action.payload]);
+    copyQuestion: (state) => {
+      state.questions.splice(state.focus + 1, 0, state.questions[state.focus]);
+      state.focus += 1;
     },
     deleteQuestion: (state, action: PayloadAction<number>) => {
       state.questions.splice(action.payload, 1);
+      state.focus -= 1;
     },
     setNewQuestion: (state) => {
-      state.questions.push(initialState.questions[0]);
+      state.questions.splice(state.focus + 1, 0, initialState.questions[0]);
+      state.focus += 1;
+    },
+    focusOn: (state, action: PayloadAction<number>) => {
+      state.focus = action.payload;
     },
   },
 });
@@ -85,5 +91,6 @@ export const {
   copyQuestion,
   deleteQuestion,
   setNewQuestion,
+  focusOn,
 } = questionSlice.actions;
 export default questionSlice.reducer;

@@ -127,7 +127,7 @@ const DropDown: React.FC<DropDownProps> = ({ idx }) => {
 export default DropDown;
 
 const Container = styled.div`
-  width: 30%;
+  width: 15rem;
   height: 3rem;
   box-sizing: border-box;
   user-select: none;
@@ -157,8 +157,8 @@ const Arrow = styled.div`
 `;
 
 const AllOptions = styled.div`
-  width: 100%;
-  position: relative;
+  width: 15rem;
+  position: absolute;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
   transform: translateY(20px);
@@ -170,7 +170,7 @@ const AllOptions = styled.div`
 
 const OptionCard = styled.div`
   width: 100%;
-  height: 60px;
+  height: 50px;
   box-sizing: border-box;
   padding: 1rem 1rem;
   cursor: pointer;

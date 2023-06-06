@@ -5,7 +5,6 @@ import { useAppSelector } from '../store/hooks';
 
 const CardBox = () => {
   const questions = useAppSelector((state) => state.survey.questions);
-
   const getQuestions = () => {
     return questions.map((e, idx) => <Question key={idx} idx={idx} />);
   };

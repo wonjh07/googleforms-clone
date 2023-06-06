@@ -10,6 +10,7 @@ const ResultHeading = () => {
       <Container>
         <Notch />
         <InputBox>
+          <Label>응답은 수정할 수 없습니다.</Label>
           <Title>{title}</Title>
           <Desc>{desc}</Desc>
           <UserInfoBox>
@@ -41,6 +42,14 @@ const Notch = styled.div`
   border-radius: 10px 10px 0 0;
 `;
 
+const Label = styled.div`
+  width: 100%;
+  font-size: 0.8rem;
+  padding-top: 1.6rem;
+  padding-left: 1.6rem;
+  color: #606367;
+`;
+
 const InputBox = styled.div`
   width: 100%;
   background-color: white;
@@ -58,8 +67,7 @@ const Title = styled.div`
   width: 100%;
   border: none;
   font-size: 2rem;
-  padding: 1.6rem;
-  padding-bottom: 0.5rem;
+  padding: 0.5rem 1.6rem;
 `;
 
 const Desc = styled.div`

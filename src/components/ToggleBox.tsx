@@ -13,19 +13,16 @@ const ToggleBox: React.FC<ToggleProps> = ({ idx }) => {
     (state) => state.survey.questions[idx].essential,
   );
 
-  const changeEssential = useCallback(
-    (essential: boolean): void => {
-      dispatch(setEssential({ essential, idx }));
-    },
-    [dispatch, idx],
-  );
+  const changeEssential = useCallback(() => {
+    dispatch(setEssential(idx));
+  }, [dispatch, idx]);
 
   return (
     <Container>
       <Toggle
         checked={essential}
         onClick={() => {
-          changeEssential(!essential);
+          changeEssential();
         }}
       />
     </Container>
