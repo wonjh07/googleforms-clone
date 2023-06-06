@@ -15,12 +15,15 @@ import { useCallback, useEffect, useState } from 'react';
 import ToggleBox from './ToggleBox';
 interface QuestionProps {
   idx: number;
+  changeStart: (v: number) => void;
+  changeEnd: (v: number) => void;
 }
 
-const Question: React.FC<QuestionProps> = ({ idx }) => {
+const Question: React.FC<QuestionProps> = ({ idx, changeStart, changeEnd }) => {
   const question = useAppSelector((state) => state.survey.questions[idx]);
   const focused = useAppSelector((state) => state.survey.focus);
   const [selected, setSelected] = useState(false);
+  const [grab, setGrab] = useState(false);
   const dispatch = useAppDispatch();
 
   const focusOnHere = useCallback(() => {
@@ -52,11 +55,29 @@ const Question: React.FC<QuestionProps> = ({ idx }) => {
     dispatch(deleteQuestion());
   }, [dispatch]);
 
+  const dragFunction = (event: any, type: string) => {
+    if (type === 'Start') {
+      changeStart(parseInt(event.target.id));
+    } else if (type === 'Enter' && event.target.dataset.dragzone) {
+      changeEnd(parseInt(event.target.id));
+    }
+  };
+
   return (
     <>
-      <Container onClick={() => focusOnHere()}>
+      <Container
+        draggable
+        id={`${idx}`}
+        onDragStart={(e) => {
+          dragFunction(e, 'Start');
+        }}
+        onDragOver={(e) => {
+          dragFunction(e, 'Enter');
+          e.preventDefault();
+        }}
+        onClick={() => focusOnHere()}>
         <SelectedBox selected={selected}>
-          <Drag>
+          <Drag data-dragzone={true} id={`${idx}`}>
             <RxDragHandleDots2
               size={20}
               style={{ transform: 'rotate(90deg)' }}
@@ -81,7 +102,7 @@ const Question: React.FC<QuestionProps> = ({ idx }) => {
               </>
             )}
           </TopBox>
-          <OptionBox category={question.questionType} idx={idx} />
+          {!grab && <OptionBox category={question.questionType} idx={idx} />}
           {selected && (
             <BottomBox>
               <LeftBox>
@@ -112,6 +133,7 @@ export default Question;
 
 const Container = styled.div`
   width: 100%;
+  height: 100%;
   max-width: 960px;
   min-width: 640px;
   box-sizing: border-box;
@@ -122,7 +144,7 @@ const Container = styled.div`
   border: 1px solid #e0e0e0;
   overflow: hidden;
   animation-name: PopUp;
-  animation-duration: 0.4s;
+  animation-duration: 0.25s;
   animation-timing-function: ease-in-out;
 `;
 

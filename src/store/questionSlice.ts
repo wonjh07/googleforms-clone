@@ -26,6 +26,11 @@ interface OptionsState {
   idx: number;
 }
 
+interface DndState {
+  x: number;
+  y: number;
+}
+
 const initialState: SurveyState = {
   title: '제목 없는 설문지',
   desc: '설문지 설명',
@@ -86,6 +91,12 @@ export const questionSlice = createSlice({
     focusOn: (state, action: PayloadAction<number>) => {
       state.focus = action.payload;
     },
+    changeIdx: (state, action: PayloadAction<DndState>) => {
+      const [a, b] = [action.payload.x, action.payload.y];
+      const temp = { ...state.questions[a] };
+      state.questions[a] = state.questions[b];
+      state.questions[b] = temp;
+    },
   },
 });
 
@@ -100,5 +111,6 @@ export const {
   deleteQuestion,
   setNewQuestion,
   focusOn,
+  changeIdx,
 } = questionSlice.actions;
 export default questionSlice.reducer;
