@@ -3,16 +3,9 @@ import DropDown from './DropDown';
 import OptionBox from './OptionBox';
 import { RxDragHandleDots2 } from 'react-icons/rx';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { MdContentCopy } from 'react-icons/md';
-import { RiDeleteBin6Line } from 'react-icons/ri';
-import {
-  copyQuestion,
-  deleteQuestion,
-  focusOn,
-  setQuestionTitle,
-} from '../store/questionSlice';
-import { useCallback, useEffect, useState } from 'react';
-import ToggleBox from './ToggleBox';
+import { focusOn, setDragMod, setQuestionTitle } from '../store/questionSlice';
+import { useEffect, useState } from 'react';
+import BottomBox from './BottomBox';
 interface QuestionProps {
   idx: number;
   changeStart: (v: number) => void;
@@ -22,15 +15,25 @@ interface QuestionProps {
 const Question: React.FC<QuestionProps> = ({ idx, changeStart, changeEnd }) => {
   const question = useAppSelector((state) => state.survey.questions[idx]);
   const focused = useAppSelector((state) => state.survey.focus);
+  const isDraggable = useAppSelector((state) => state.survey.draggable);
   const [selected, setSelected] = useState(false);
+  const [grabIcon, setGrabIcon] = useState(false);
   const [grab, setGrab] = useState(false);
   const dispatch = useAppDispatch();
 
-  const focusOnHere = useCallback(() => {
+  const focusOnHere = () => {
     if (!selected) {
       dispatch(focusOn(idx));
     }
-  }, [dispatch, idx, selected]);
+  };
+
+  const changeTitle = (str: string) => {
+    dispatch(setQuestionTitle({ str, idx }));
+  };
+
+  const setDraggable = (v: boolean) => {
+    dispatch(setDragMod(v));
+  };
 
   useEffect(() => {
     if (focused === idx) {
@@ -40,48 +43,56 @@ const Question: React.FC<QuestionProps> = ({ idx, changeStart, changeEnd }) => {
     }
   }, [focused, idx]);
 
-  const changeTitle = useCallback(
-    (str: string) => {
-      dispatch(setQuestionTitle({ str, idx }));
-    },
-    [dispatch, idx],
-  );
-
-  const copyQuest = useCallback(() => {
-    dispatch(copyQuestion());
-  }, [dispatch]);
-
-  const deleteQuest = useCallback(() => {
-    dispatch(deleteQuestion());
-  }, [dispatch]);
-
-  const dragFunction = (event: any, type: string) => {
+  const dragFunction = (e: any, type: string) => {
     if (type === 'Start') {
-      changeStart(parseInt(event.target.id));
-    } else if (type === 'Enter' && event.target.dataset.dragzone) {
-      changeEnd(parseInt(event.target.id));
+      e.dataTransfer.effectAllowed = 'move';
+      setGrab(true);
+      changeStart(parseInt(e.target.id));
+    } else if (type === 'Enter' && e.target.dataset.dropzone) {
+      changeEnd(parseInt(e.target.id));
+    } else if (type === 'End') {
+      setGrab(false);
     }
   };
 
   return (
     <>
       <Container
-        draggable
+        draggable={isDraggable}
         id={`${idx}`}
         onDragStart={(e) => {
           dragFunction(e, 'Start');
         }}
-        onDragOver={(e) => {
+        onDragEnter={(e) => {
           dragFunction(e, 'Enter');
-          e.preventDefault();
         }}
-        onClick={() => focusOnHere()}>
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }}
+        onDragEnd={(e) => {
+          dragFunction(e, 'End');
+        }}
+        onClick={() => focusOnHere()}
+        grab={grab}>
         <SelectedBox selected={selected}>
-          <Drag data-dragzone={true} id={`${idx}`}>
-            <RxDragHandleDots2
-              size={20}
-              style={{ transform: 'rotate(90deg)' }}
-            />
+          <Drag
+            data-dropzone={true}
+            id={`${idx}`}
+            onMouseEnter={() => {
+              setDraggable(true);
+              setGrabIcon(true);
+            }}
+            onMouseLeave={() => {
+              setDraggable(false);
+              setGrabIcon(false);
+            }}>
+            {grabIcon && (
+              <RxDragHandleDots2
+                size={20}
+                style={{ transform: 'rotate(90deg)' }}
+              />
+            )}
           </Drag>
           <TopBox>
             {!selected && (
@@ -103,26 +114,8 @@ const Question: React.FC<QuestionProps> = ({ idx, changeStart, changeEnd }) => {
             )}
           </TopBox>
           {!grab && <OptionBox category={question.questionType} idx={idx} />}
-          {selected && (
-            <BottomBox>
-              <LeftBox>
-                <MdContentCopy
-                  style={{ cursor: 'pointer' }}
-                  size={22}
-                  onClick={() => copyQuest()}
-                />
-                <RiDeleteBin6Line
-                  style={{ cursor: 'pointer' }}
-                  size={24}
-                  onClick={() => deleteQuest()}
-                />
-              </LeftBox>
-              <RightBox>
-                <p>필수</p>
-                <ToggleBox idx={idx} />
-              </RightBox>
-            </BottomBox>
-          )}
+          {grab && <Dragging>...</Dragging>}
+          {selected && !grab && <BottomBox idx={idx} />}
         </SelectedBox>
       </Container>
     </>
@@ -131,7 +124,7 @@ const Question: React.FC<QuestionProps> = ({ idx, changeStart, changeEnd }) => {
 
 export default Question;
 
-const Container = styled.div`
+const Container = styled.div<{ grab: boolean }>`
   width: 100%;
   height: 100%;
   max-width: 960px;
@@ -141,10 +134,11 @@ const Container = styled.div`
   flex-direction: column;
   background-color: white;
   border-radius: 10px;
-  border: 1px solid #e0e0e0;
+  border: ${(props) =>
+    props.grab ? '4px solid #613cb0' : '1px solid #e0e0e0'};
   overflow: hidden;
   animation-name: PopUp;
-  animation-duration: 0.25s;
+  animation-duration: 0.3s;
   animation-timing-function: ease-in-out;
 `;
 
@@ -175,19 +169,6 @@ const TopBox = styled.div`
   justify-content: space-between;
 `;
 
-const BottomBox = styled.div`
-  width: 100%;
-  height: 5rem;
-  border-top: 1px solid #e0e0e0;
-  box-sizing: border-box;
-  padding: 1.4rem;
-  display: flex;
-  gap: 1.2rem;
-  flex-direction: row;
-  justify-content: end;
-  align-items: center;
-`;
-
 const Title = styled.div`
   width: 60%;
   font-weight: 500;
@@ -215,24 +196,12 @@ const QuestionTitle = styled.input`
   }
 `;
 
-const LeftBox = styled.div`
-  width: auto;
-  height: 100%;
-  gap: 1rem;
-  padding: 0 1rem;
+const Dragging = styled.div`
+  width: 100%;
+  height: 8rem;
   display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
-  border-right: 1px solid #a1a2a3;
+  font-size: 2rem;
   color: #717579;
-`;
-
-const RightBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  font-size: 0.9rem;
 `;

@@ -3,7 +3,6 @@ import { GrClose } from 'react-icons/gr';
 import { BiCheckbox, BiRadioCircle } from 'react-icons/bi';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setOpts } from '../store/questionSlice';
-import { useCallback } from 'react';
 
 interface OptionProps {
   category: string;
@@ -11,19 +10,15 @@ interface OptionProps {
 }
 
 const OptionBox: React.FC<OptionProps> = ({ category, idx }) => {
-  let bodyContent = <ShortOption>단답형 텍스트</ShortOption>;
   const dispatch = useAppDispatch();
 
   const options = useAppSelector(
     (state) => state.survey.questions[idx].options,
   );
 
-  const changeOption = useCallback(
-    (options: string[]): void => {
-      dispatch(setOpts({ options, idx }));
-    },
-    [dispatch, idx],
-  );
+  const changeOption = (options: string[]): void => {
+    dispatch(setOpts({ options, idx }));
+  };
 
   const removeOption = (idx: number) => {
     const current = [...options];
@@ -71,40 +66,41 @@ const OptionBox: React.FC<OptionProps> = ({ category, idx }) => {
     ));
   };
 
-  if (category === '단답형') {
-    bodyContent = <ShortOption>단답형 텍스트</ShortOption>;
-  } else if (category === '장문형') {
-    bodyContent = <LongOption>장문형 텍스트</LongOption>;
-  } else {
-    bodyContent = (
-      <MutipleOption>
-        {getOptions()}
-        <OptionContainer>
-          {category === '객관식 질문' && (
-            <IconBox>
-              <BiRadioCircle color="gray" size={'2rem'} />
-            </IconBox>
-          )}
-          {category === '체크박스' && (
-            <IconBox>
-              <BiCheckbox color="gray" size={'2rem'} />
-            </IconBox>
-          )}
-          {category === '드롭다운' && (
-            <IconBox>
-              <p>{options.length + 1}</p>
-            </IconBox>
-          )}
-
-          <OptionAdd onClick={addOption}>옵션 추가</OptionAdd>
-        </OptionContainer>
-      </MutipleOption>
-    );
-  }
+  const getBody = () => {
+    if (category === '단답형') {
+      return <ShortOption>단답형 텍스트</ShortOption>;
+    } else if (category === '장문형') {
+      return <LongOption>장문형 텍스트</LongOption>;
+    } else {
+      return (
+        <MutipleOption>
+          {getOptions()}
+          <OptionContainer>
+            {category === '객관식 질문' && (
+              <IconBox>
+                <BiRadioCircle color="gray" size={'2rem'} />
+              </IconBox>
+            )}
+            {category === '체크박스' && (
+              <IconBox>
+                <BiCheckbox color="gray" size={'2rem'} />
+              </IconBox>
+            )}
+            {category === '드롭다운' && (
+              <IconBox>
+                <p>{options.length + 1}</p>
+              </IconBox>
+            )}
+            <OptionAdd onClick={addOption}>옵션 추가</OptionAdd>
+          </OptionContainer>
+        </MutipleOption>
+      );
+    }
+  };
 
   return (
     <>
-      <Container>{bodyContent}</Container>
+      <Container>{getBody()}</Container>
     </>
   );
 };

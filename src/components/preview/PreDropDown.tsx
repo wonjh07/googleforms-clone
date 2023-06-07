@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -14,20 +14,14 @@ const PreDropDown: React.FC<DropDownProps> = ({ idx }) => {
   const current = useAppSelector((state) => state.preview.data[idx]);
   const dispatch = useAppDispatch();
 
-  const setSingleAnswer = useCallback(
-    (answer: string) => {
-      dispatch(setAnswers({ idx, answer }));
-    },
-    [dispatch, idx],
-  );
+  const setSingleAnswer = (answer: string) => {
+    dispatch(setAnswers({ idx, answer }));
+  };
 
-  const changeAnswer = useCallback(
-    (category: string) => {
-      setSingleAnswer(category);
-      setOpen(false);
-    },
-    [setSingleAnswer],
-  );
+  const changeAnswer = (category: string) => {
+    setSingleAnswer(category);
+    setOpen(false);
+  };
 
   const getCurrentCard = () => {
     return (

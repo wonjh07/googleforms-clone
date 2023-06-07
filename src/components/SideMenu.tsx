@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { useAppDispatch } from '../store/hooks';
-import { useCallback } from 'react';
 import { setNewQuestion } from '../store/questionSlice';
 
 const SideMenu = () => {
   const dispatch = useAppDispatch();
-  const newQuest = useCallback(() => dispatch(setNewQuestion()), [dispatch]);
+  const newQuest = () => dispatch(setNewQuestion());
   return (
     <>
       <FlexBox>

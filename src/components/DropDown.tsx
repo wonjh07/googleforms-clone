@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import {
   MdOutlineArrowDropDown,
@@ -23,12 +23,9 @@ const DropDown: React.FC<DropDownProps> = ({ idx }) => {
     (state) => state.survey.questions[idx].questionType,
   );
 
-  const changeType = useCallback(
-    (str: string): void => {
-      dispatch(setType({ str, idx }));
-    },
-    [dispatch, idx],
-  );
+  const changeType = (str: string) => {
+    dispatch(setType({ str, idx }));
+  };
 
   const changeOption = (category: string) => {
     changeType(category);

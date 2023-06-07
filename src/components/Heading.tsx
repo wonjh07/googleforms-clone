@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { focusOn, setDesc, setTitle } from '../store/questionSlice';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Heading = () => {
   const title = useAppSelector((state) => state.survey.title);
@@ -13,19 +13,13 @@ const Heading = () => {
     dispatch(focusOn(-1));
   };
 
-  const getTitleChange = useCallback(
-    (str: string) => {
-      dispatch(setTitle(str));
-    },
-    [dispatch],
-  );
+  const getTitleChange = (str: string) => {
+    dispatch(setTitle(str));
+  };
 
-  const getDescChange = useCallback(
-    (str: string) => {
-      dispatch(setDesc(str));
-    },
-    [dispatch],
-  );
+  const getDescChange = (str: string) => {
+    dispatch(setDesc(str));
+  };
 
   useEffect(() => {
     if (focused === -1) {

@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setEssential } from '../store/questionSlice';
@@ -13,9 +12,9 @@ const ToggleBox: React.FC<ToggleProps> = ({ idx }) => {
     (state) => state.survey.questions[idx].essential,
   );
 
-  const changeEssential = useCallback(() => {
+  const changeEssential = () => {
     dispatch(setEssential(idx));
-  }, [dispatch, idx]);
+  };
 
   return (
     <Container>

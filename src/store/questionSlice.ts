@@ -13,6 +13,7 @@ interface SurveyState {
   desc: string;
   status: 'home' | 'preview' | 'result';
   focus: number;
+  draggable: boolean;
   questions: QuestionState[];
 }
 
@@ -36,6 +37,7 @@ const initialState: SurveyState = {
   desc: '설문지 설명',
   status: 'home',
   focus: 0,
+  draggable: false,
   questions: [
     {
       questionTitle: '',
@@ -97,6 +99,9 @@ export const questionSlice = createSlice({
       state.questions[a] = state.questions[b];
       state.questions[b] = temp;
     },
+    setDragMod: (state, action: PayloadAction<boolean>) => {
+      state.draggable = action.payload;
+    },
   },
 });
 
@@ -112,5 +117,6 @@ export const {
   setNewQuestion,
   focusOn,
   changeIdx,
+  setDragMod,
 } = questionSlice.actions;
 export default questionSlice.reducer;
