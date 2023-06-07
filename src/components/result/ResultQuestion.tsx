@@ -161,7 +161,7 @@ const RadioBox = styled.input`
   cursor: pointer;
 
   &:checked {
-    border: 0.4em solid #613cb0;
+    border: 0.4rem solid #613cb0;
   }
 `;
 

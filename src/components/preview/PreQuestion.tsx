@@ -27,9 +27,7 @@ const PreQuestion: React.FC<QuestionProps> = ({ idx }) => {
       return (
         <ShortAnswer
           placeholder="내 답변"
-          onChange={(e: any) => {
-            setSingleAnswer(e.target.value);
-          }}
+          onChange={(e: any) => setSingleAnswer(e.target.value)}
         />
       );
     }
@@ -37,9 +35,7 @@ const PreQuestion: React.FC<QuestionProps> = ({ idx }) => {
       return (
         <LongAnswer
           placeholder="내 답변"
-          onChange={(e: any) => {
-            setSingleAnswer(e.target.value);
-          }}
+          onChange={(e: any) => setSingleAnswer(e.target.value)}
         />
       );
     }
@@ -53,9 +49,7 @@ const PreQuestion: React.FC<QuestionProps> = ({ idx }) => {
                 id={`site${oIdx}`}
                 value={option}
                 name="site"
-                onClick={(e: any) => {
-                  setSingleAnswer(e.target.value);
-                }}
+                onClick={(e: any) => setSingleAnswer(e.target.value)}
               />
               <Label htmlFor={`site${oIdx}`}>{option}</Label>
             </Option>
@@ -73,9 +67,7 @@ const PreQuestion: React.FC<QuestionProps> = ({ idx }) => {
                 id={`site${oIdx}`}
                 value={option}
                 name={`site${oIdx}`}
-                onClick={(e: any) => {
-                  setMultipleAnswer(e.target.value);
-                }}
+                onClick={(e: any) => setMultipleAnswer(e.target.value)}
               />
               <CheckIcon className="check" />
               <Label htmlFor={`site${oIdx}`}>{option}</Label>
@@ -191,11 +183,11 @@ const RadioBox = styled.input`
   border-radius: 50%;
   vertical-align: middle;
   appearance: none;
-  transition: 0.3s;
+  transition: 0.2s ease-in-out;
   cursor: pointer;
 
   &:checked {
-    border: 0.4em solid #613cb0;
+    border: 0.4rem solid #613cb0;
   }
 `;
 
