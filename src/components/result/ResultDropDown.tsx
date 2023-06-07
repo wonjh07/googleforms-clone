@@ -10,18 +10,16 @@ const ResultDropDown: React.FC<DropDownProps> = ({ idx }) => {
   const current = useAppSelector((state) => state.preview.data[idx]);
 
   return (
-    <>
-      <Container>
-        <CurrentOption>
-          <OptionCard>
-            <Text>{current === '' ? '선택' : current}</Text>
-          </OptionCard>
-          <Arrow>
-            <MdOutlineArrowDropDown size={24} />
-          </Arrow>
-        </CurrentOption>
-      </Container>
-    </>
+    <Container>
+      <CurrentOption>
+        <OptionCard>
+          <Text>{current === '' ? '선택' : current}</Text>
+        </OptionCard>
+        <Arrow>
+          <MdOutlineArrowDropDown size={24} />
+        </Arrow>
+      </CurrentOption>
+    </Container>
   );
 };
 
@@ -35,43 +33,43 @@ const Container = styled.div`
 `;
 
 const CurrentOption = styled.div`
-  width: 100%;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  box-sizing: border-box;
-  overflow: hidden;
-  background-color: white;
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-items: center;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: white;
 `;
 
 const Arrow = styled.div`
+  padding-right: 1rem;
   color: #717579;
   pointer-events: none;
-  padding-right: 1rem;
 `;
 
 const OptionCard = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
   width: 100%;
   height: 60px;
   box-sizing: border-box;
   padding: 1rem 1rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
   gap: 1rem;
   color: #717579;
 `;
 
 const Text = styled.div`
-  height: 100%;
-  margin-top: 3px;
-  font-size: 0.9rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  height: 100%;
+  margin-top: 3px;
+  font-size: 0.9rem;
 `;

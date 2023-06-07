@@ -17,56 +17,78 @@ interface OptionProps {
 }
 
 const OptionBox: React.FC<OptionProps> = ({ category, idx }) => {
-  const [grabIcon, setGrabIcon] = useState(false);
-  const [grab, setGrab] = useState(false);
-  const [draggable, setDraggable] = useState(false);
   const target = useRef(-1);
+  const [grab, setGrab] = useState(false);
+  const [grabIcon, setGrabIcon] = useState(false);
+  const [draggable, setDraggable] = useState(false);
   const focused = useAppSelector((state) => state.survey.focus);
   const options = useAppSelector(
     (state) => state.survey.questions[idx].options,
   );
   const dispatch = useAppDispatch();
-
-  const changeOption = (oIdx: number, name: string): void => {
+  const removeOption = (oIdx: number) => dispatch(removeOpts(oIdx));
+  const changeOption = (oIdx: number, name: string) =>
     dispatch(changeOpts({ oIdx, name }));
-  };
+  const addOption = () => dispatch(newOpts());
+  const dragAndDrop = (x: number, y: number) => dispatch(dragOption({ x, y }));
 
-  const removeOption = (oIdx: number) => {
-    dispatch(removeOpts(oIdx));
-  };
-
-  const addOption = () => {
-    dispatch(newOpts());
-  };
-
-  const dragAndDrop = (x: number, y: number) => {
-    dispatch(dragOption({ x, y }));
-  };
-
-  const dragOver = (v: number) => {
-    if (target.current !== -1 && target.current !== v) {
-      dragAndDrop(target.current, v);
-      target.current = v;
-    }
-  };
-
-  const dragFunction = (e: any, type: string) => {
-    if (type === 'Start' && e.target.dataset.drag === `option ${idx}`) {
+  const dragStart = (e: any) => {
+    if (e.target.dataset.drag === `option ${idx}`) {
       e.dataTransfer.effectAllowed = 'move';
       target.current = parseInt(e.target.id);
       setGrab(true);
-    } else if (
-      type === 'Enter' &&
-      e.target.dataset.dropzone === `option ${idx}` &&
-      e.target.id
-    ) {
-      dragOver(parseInt(e.target.id));
-    } else if (type === 'End') {
-      if (grab) {
-        target.current = -1;
-        setGrab(false);
+    }
+  };
+
+  const dragEnter = (e: any) => {
+    if (e.target.dataset.dropzone === `option ${idx}` && e.target.id) {
+      const v = parseInt(e.target.id);
+      if (target.current !== -1 && target.current !== v) {
+        dragAndDrop(target.current, v);
+        target.current = v;
       }
     }
+  };
+
+  const dragEnd = () => {
+    if (grab) {
+      target.current = -1;
+      setGrab(false);
+    }
+  };
+
+  const dragOver = (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const getMutipleIcons = (category: string, num: number) => {
+    if (category === '객관식 질문') {
+      return (
+        <IconBox>
+          <BiRadioCircle color="gray" size={'2rem'} />
+        </IconBox>
+      );
+    }
+    if (category === '체크박스') {
+      return (
+        <IconBox>
+          <BiCheckbox color="gray" size={'2rem'} />
+        </IconBox>
+      );
+    }
+    if (category === '드롭다운') {
+      return (
+        <IconBox>
+          <Text>{num}</Text>
+        </IconBox>
+      );
+    }
+  };
+
+  const changeIconState = (state: boolean) => {
+    setDraggable(state);
+    setGrabIcon(state);
   };
 
   const getOptions = () => {
@@ -78,54 +100,20 @@ const OptionBox: React.FC<OptionProps> = ({ category, idx }) => {
         id={`${oIdx}`}
         draggable={draggable}
         data-drag={`option ${idx}`}
-        onDragStart={(e) => {
-          dragFunction(e, 'Start');
-        }}
-        onDragEnter={(e) => {
-          dragFunction(e, 'Enter');
-        }}
-        onDragOver={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-        onDragEnd={(e) => {
-          dragFunction(e, 'End');
-        }}>
+        onDragStart={(e) => dragStart(e)}
+        onDragEnter={(e) => dragEnter(e)}
+        onDragOver={(e) => dragOver(e)}
+        onDragEnd={() => dragEnd()}>
         <DragIcon
           data-dropzone={`option ${idx}`}
           id={`${oIdx}`}
-          onMouseEnter={() => {
-            setDraggable(true);
-            setGrabIcon(true);
-          }}
-          onMouseLeave={() => {
-            setDraggable(false);
-            setGrabIcon(false);
-          }}>
+          onMouseEnter={() => changeIconState(true)}
+          onMouseLeave={() => changeIconState(false)}>
           {grabIcon && (
-            <RxDragHandleDots2
-              data-dropzone={`option ${idx}`}
-              id={`${oIdx}`}
-              size={18}
-            />
+            <RxDragHandleDots2 style={{ userSelect: 'none' }} size={18} />
           )}
         </DragIcon>
-
-        {category === '객관식 질문' && (
-          <IconBox>
-            <BiRadioCircle color="gray" size={'2rem'} />
-          </IconBox>
-        )}
-        {category === '체크박스' && (
-          <IconBox>
-            <BiCheckbox color="gray" size={'2rem'} />
-          </IconBox>
-        )}
-        {category === '드롭다운' && (
-          <IconBox>
-            <Text>{oIdx + 1}</Text>
-          </IconBox>
-        )}
+        {getMutipleIcons(category, oIdx + 1)}
         <Options
           value={e}
           onChange={(e) => changeOption(oIdx, e.target.value)}
@@ -145,21 +133,7 @@ const OptionBox: React.FC<OptionProps> = ({ category, idx }) => {
         <MutipleOption>
           {getOptions()}
           <OptionContainer grab={false}>
-            {category === '객관식 질문' && (
-              <IconBox>
-                <BiRadioCircle color="gray" size={'2rem'} />
-              </IconBox>
-            )}
-            {category === '체크박스' && (
-              <IconBox>
-                <BiCheckbox color="gray" size={'2rem'} />
-              </IconBox>
-            )}
-            {category === '드롭다운' && (
-              <IconBox>
-                <Text>{options.length + 1}</Text>
-              </IconBox>
-            )}
+            {getMutipleIcons(category, options.length + 1)}
             <OptionAdd onClick={addOption}>옵션 추가</OptionAdd>
           </OptionContainer>
         </MutipleOption>
@@ -184,35 +158,35 @@ const Container = styled.div`
 
 const ShortOption = styled.div`
   width: 200px;
-  border-bottom: 1px dotted gray;
   padding: 0.6rem 0;
+  border-bottom: 1px dotted gray;
   font-size: 1rem;
   color: gray;
 `;
 
 const LongOption = styled.div`
   width: 400px;
-  border-bottom: 1px dotted gray;
   padding: 0.6rem 0;
+  border-bottom: 1px dotted gray;
   font-size: 1rem;
   color: gray;
 `;
 
 const MutipleOption = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: start;
+  width: 100%;
   gap: 1rem;
 `;
 
 const OptionContainer = styled.div<{ grab: boolean }>`
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 100%;
+  height: 100%;
   border-bottom: ${(props) => (props.grab ? '2px solid #613cb0' : '')};
   border-top: ${(props) => (props.grab ? '2px solid #613cb0' : '')};
 `;
@@ -234,10 +208,10 @@ const Options = styled.input`
 `;
 
 const OptionAdd = styled.p`
-  font-size: 1rem;
-  color: gray;
   box-sizing: border-box;
   margin-top: 2px;
+  font-size: 1rem;
+  color: gray;
   &:hover {
     border-bottom: solid 1px gray;
     margin-bottom: -1px;
@@ -245,27 +219,27 @@ const OptionAdd = styled.p`
 `;
 
 const CloseButton = styled(GrClose)`
-  cursor: pointer;
   margin-left: 1rem;
+  cursor: pointer;
 `;
 
 const IconBox = styled.div`
-  width: 2.2rem;
-  height: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 2.2rem;
+  height: 2rem;
   box-sizing: border-box;
   padding-bottom: 1px;
 `;
 
 const DragIcon = styled.div`
-  position: absolute;
-  height: 1rem;
-  width: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: absolute;
+  height: 1rem;
+  width: 1rem;
   margin-top: -2px;
   padding: 0.2rem 0;
   transform: translateX(-80%);
@@ -274,11 +248,11 @@ const DragIcon = styled.div`
 `;
 
 const Text = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 2rem;
   margin-top: 2px;
-  display: flex;
   font-size: 1.1rem;
-  justify-content: center;
-  align-items: center;
 `;

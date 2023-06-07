@@ -6,33 +6,31 @@ const ResultHeading = () => {
   const desc = useAppSelector((state) => state.survey.desc);
 
   return (
-    <>
-      <Container>
-        <Notch />
-        <InputBox>
-          <Label>응답은 수정할 수 없습니다.</Label>
-          <Title>{title}</Title>
-          <Desc>{desc}</Desc>
-          <UserInfoBox>
-            <Warn>* 표시는 필수 질문임</Warn>
-          </UserInfoBox>
-        </InputBox>
-      </Container>
-    </>
+    <Container>
+      <Notch />
+      <InputBox>
+        <Label>응답은 수정할 수 없습니다.</Label>
+        <Title>{title}</Title>
+        <Desc>{desc}</Desc>
+        <UserInfoBox>
+          <Warn>* 표시는 필수 질문임</Warn>
+        </UserInfoBox>
+      </InputBox>
+    </Container>
   );
 };
 
 export default ResultHeading;
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   width: 100%;
   max-width: 720px;
   min-width: 640px;
   height: auto;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
 `;
 
 const Notch = styled.div`
@@ -44,30 +42,30 @@ const Notch = styled.div`
 
 const Label = styled.div`
   width: 100%;
-  font-size: 0.8rem;
   padding-top: 1.6rem;
   padding-left: 1.6rem;
   color: #606367;
+  font-size: 0.8rem;
 `;
 
 const InputBox = styled.div`
-  width: 100%;
-  background-color: white;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
   gap: 1rem;
   border: 1px solid #e0e0e0;
   border-top: 0px;
   border-radius: 0 0 10px 10px;
-  overflow: hidden;
+  background-color: white;
 `;
 
 const Title = styled.div`
   width: 100%;
+  padding: 0.5rem 1.6rem;
   border: none;
   font-size: 2rem;
-  padding: 0.5rem 1.6rem;
 `;
 
 const Desc = styled.div`
@@ -78,17 +76,17 @@ const Desc = styled.div`
 `;
 
 const UserInfoBox = styled.div`
-  width: 100%;
-  border-top: 1px solid #e0e0e0;
-  box-sizing: border-box;
-  padding: 1rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: end;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+  border-top: 1px solid #e0e0e0;
 `;
 
 const Warn = styled.div`
-  color: #d63725;
   padding: 0.6rem;
+  color: #d63725;
 `;

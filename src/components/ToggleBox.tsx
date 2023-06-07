@@ -7,23 +7,15 @@ interface ToggleProps {
 }
 
 const ToggleBox: React.FC<ToggleProps> = ({ idx }) => {
-  const dispatch = useAppDispatch();
   const essential = useAppSelector(
     (state) => state.survey.questions[idx].essential,
   );
-
-  const changeEssential = () => {
-    dispatch(setEssential(idx));
-  };
+  const dispatch = useAppDispatch();
+  const changeEssential = () => dispatch(setEssential(idx));
 
   return (
     <Container>
-      <Toggle
-        checked={essential}
-        onClick={() => {
-          changeEssential();
-        }}
-      />
+      <Toggle checked={essential} onClick={() => changeEssential()} />
     </Container>
   );
 };
@@ -31,22 +23,22 @@ const ToggleBox: React.FC<ToggleProps> = ({ idx }) => {
 export default ToggleBox;
 
 const Container = styled.div`
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100%;
   box-sizing: border-box;
 `;
 
 const Toggle = styled.div<{ checked: boolean }>`
-  cursor: pointer;
+  display: block;
+  position: relative;
   height: 16px;
   width: 42px;
-  background: ${(props) => (props.checked ? '#d9caf8' : '#B9B9B9')};
-  display: block;
-  border-radius: 100px;
-  position: relative;
   box-sizing: border-box;
+  border-radius: 100px;
+  background: ${(props) => (props.checked ? '#d9caf8' : '#B9B9B9')};
+  cursor: pointer;
 
   &:after {
     content: '';
@@ -56,8 +48,8 @@ const Toggle = styled.div<{ checked: boolean }>`
     height: 22px;
     background: ${(props) => (props.checked ? '#613CB0' : 'white')};
     border-radius: 90px;
-    transition: 0.3s;
     box-shadow: 0px 2px 4px 0px #717579;
+    transition: 0.3s;
     transform: ${(props) => (props.checked ? 'translateX(100%)' : '')};
   }
 `;

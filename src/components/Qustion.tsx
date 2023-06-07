@@ -8,39 +8,66 @@ import { useEffect, useState } from 'react';
 import BottomBox from './BottomBox';
 interface QuestionProps {
   idx: number;
-  dragStart: (v: number) => void;
-  dragOver: (v: number) => void;
-  dragEnd: () => void;
+  dndStart: (v: number) => void;
+  dndEnter: (v: number) => void;
+  dndEnd: () => void;
 }
 
 const Question: React.FC<QuestionProps> = ({
   idx,
-  dragStart,
-  dragOver,
-  dragEnd,
+  dndStart,
+  dndEnter,
+  dndEnd,
 }) => {
-  const question = useAppSelector((state) => state.survey.questions[idx]);
-  const focused = useAppSelector((state) => state.survey.focus);
-  const isDraggable = useAppSelector((state) => state.survey.draggable);
+  const [grab, setGrab] = useState(false);
   const [selected, setSelected] = useState(false);
   const [grabIcon, setGrabIcon] = useState(false);
-  const [grab, setGrab] = useState(false);
+  const isDraggable = useAppSelector((state) => state.survey.draggable);
+  const question = useAppSelector((state) => state.survey.questions[idx]);
+  const focused = useAppSelector((state) => state.survey.focus);
   const dispatch = useAppDispatch();
-
+  const changeTitle = (str: string) => dispatch(setQuestionTitle({ str, idx }));
   const focusOnHere = () => {
     if (!selected) {
       dispatch(focusOn(idx));
     }
   };
 
-  const changeTitle = (str: string) => {
-    dispatch(setQuestionTitle({ str, idx }));
-  };
-
   const setDraggable = (v: boolean) => {
     if (isDraggable !== v) {
       dispatch(setDragMod(v));
     }
+  };
+
+  const changeIconState = (state: boolean) => {
+    setDraggable(state);
+    setGrabIcon(state);
+  };
+
+  const dragStart = (e: any) => {
+    if (e.target.dataset.drag === 'quest') {
+      e.dataTransfer.effectAllowed = 'move';
+      setGrab(true);
+      dndStart(parseInt(e.target.id));
+    }
+  };
+
+  const dragEnter = (e: any) => {
+    if (e.target.dataset.dropzone === 'quest' && e.target.id) {
+      dndEnter(parseInt(e.target.id));
+    }
+  };
+
+  const dragEnd = () => {
+    if (grab) {
+      setGrab(false);
+      dndEnd();
+    }
+  };
+
+  const dragOver = (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
   };
 
   useEffect(() => {
@@ -51,157 +78,128 @@ const Question: React.FC<QuestionProps> = ({
     }
   }, [focused, idx]);
 
-  const dragFunction = (e: any, type: string) => {
-    if (type === 'Start' && e.target.dataset.drag === 'quest') {
-      e.dataTransfer.effectAllowed = 'move';
-      setGrab(true);
-      dragStart(parseInt(e.target.id));
-    } else if (
-      type === 'Enter' &&
-      e.target.dataset.dropzone === 'quest' &&
-      e.target.id
-    ) {
-      dragOver(parseInt(e.target.id));
-    } else if (type === 'End') {
-      if (grab) {
-        setGrab(false);
-        dragEnd();
-      }
-    }
-  };
-
   return (
-    <>
-      <Container
-        draggable={isDraggable}
-        id={`${idx}`}
-        data-drag="quest"
-        onDragStart={(e) => {
-          dragFunction(e, 'Start');
-        }}
-        onDragEnter={(e) => {
-          dragFunction(e, 'Enter');
-        }}
-        onDragOver={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-        onDragEnd={(e) => {
-          dragFunction(e, 'End');
-        }}
-        onClick={() => focusOnHere()}
-        grab={grab}>
-        <SelectedBox selected={selected}>
-          <Drag
-            data-dropzone="quest"
-            id={`${idx}`}
-            onMouseEnter={() => {
-              setDraggable(true);
-              setGrabIcon(true);
-            }}
-            onMouseLeave={() => {
-              setDraggable(false);
-              setGrabIcon(false);
-            }}>
-            {grabIcon && (
-              <RxDragHandleDots2
-                size={20}
-                id={`${idx}`}
-                data-dropzone="quest"
-                style={{ transform: 'rotate(90deg)' }}
+    <Container
+      draggable={isDraggable}
+      id={`${idx}`}
+      grab={grab}
+      data-drag="quest"
+      onDragStart={(e) => dragStart(e)}
+      onDragEnter={(e) => dragEnter(e)}
+      onDragOver={(e) => dragOver(e)}
+      onDragEnd={() => dragEnd()}
+      onClick={() => focusOnHere()}>
+      <SelectedBox selected={selected}>
+        <Drag
+          data-dropzone="quest"
+          id={`${idx}`}
+          onMouseEnter={() => changeIconState(true)}
+          onMouseLeave={() => changeIconState(false)}>
+          {grabIcon && (
+            <RxDragHandleDots2
+              size={20}
+              style={{ transform: 'rotate(90deg)', userSelect: 'none' }}
+            />
+          )}
+        </Drag>
+        <TopBox>
+          {!selected && (
+            <Title>
+              {question.questionTitle ? question.questionTitle : '질문'}
+            </Title>
+          )}
+          {selected && (
+            <>
+              <QuestionTitle
+                placeholder="질문"
+                value={question.questionTitle}
+                onChange={(e) => changeTitle(e.target.value)}
               />
-            )}
-          </Drag>
-          <TopBox>
-            {!selected && (
-              <Title>
-                {question.questionTitle ? question.questionTitle : '질문'}
-              </Title>
-            )}
-            {selected && (
-              <>
-                <QuestionTitle
-                  placeholder="질문"
-                  value={question.questionTitle}
-                  onChange={(e) => {
-                    changeTitle(e.target.value);
-                  }}
-                />
-                <DropDown idx={idx} />
-              </>
-            )}
-          </TopBox>
-          {!grab && <OptionBox category={question.questionType} idx={idx} />}
-          {grab && <Dragging>...</Dragging>}
-          {selected && !grab && <BottomBox idx={idx} />}
-        </SelectedBox>
-      </Container>
-    </>
+              <DropDown idx={idx} />
+            </>
+          )}
+        </TopBox>
+        {!grab && <OptionBox category={question.questionType} idx={idx} />}
+        {grab && <Dragging>...</Dragging>}
+        {selected && !grab && <BottomBox idx={idx} />}
+      </SelectedBox>
+    </Container>
   );
 };
 
 export default Question;
 
 const Container = styled.div<{ grab: boolean }>`
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   width: 100%;
   height: 100%;
   max-width: 960px;
   min-width: 640px;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  background-color: white;
   border-radius: 10px;
   border: ${(props) =>
     props.grab ? '4px solid #613cb0' : '1px solid #e0e0e0'};
-  overflow: hidden;
+  background-color: white;
   animation-name: 'PopUp';
   animation-duration: 0.3s;
   animation-timing-function: ease-in-out;
+
+  @keyframes PopUp {
+    0% {
+      transform: translateY(-25%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
 `;
 
 const SelectedBox = styled.div<{ selected: boolean }>`
   width: 100%;
-  padding: 0 1.1rem;
   box-sizing: border-box;
+  padding: 0 1.1rem;
   border-left: 0.5rem solid ${(props) => (props.selected ? '#5383ec' : 'white')};
   border-right: 0.5rem solid white;
 `;
 
 const Drag = styled.div`
-  width: 100%;
-  height: 1.6rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 1.6rem;
   cursor: move;
   color: #717579;
 `;
 
 const TopBox = styled.div`
-  width: 100%;
-  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const Title = styled.div`
   width: 60%;
-  font-weight: 500;
   box-sizing: border-box;
-  border: none;
   padding-top: 1.2rem;
+  border: none;
+  font-weight: 500;
 `;
 
 const QuestionTitle = styled.input`
   width: 60%;
   box-sizing: border-box;
+  padding: 1.2rem;
   border: none;
   border-bottom: 1px solid #717579;
   font-size: 1rem;
-  padding: 1.2rem;
   background-color: #f8f9fa;
   &:focus {
     outline: none;
@@ -215,11 +213,11 @@ const QuestionTitle = styled.input`
 `;
 
 const Dragging = styled.div`
-  width: 100%;
-  height: 8rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 8rem;
   font-size: 2rem;
   color: #717579;
 `;

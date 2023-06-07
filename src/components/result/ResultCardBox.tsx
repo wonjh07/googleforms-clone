@@ -12,27 +12,25 @@ const ResultCardBox = () => {
   };
 
   return (
-    <>
-      <Container>
-        <ResultHeading />
-        {getQuestions()}
-        <HomeBtn to="/">홈으로</HomeBtn>
-      </Container>
-    </>
+    <Container>
+      <ResultHeading />
+      {getQuestions()}
+      <HomeBtn to="/">홈으로</HomeBtn>
+    </Container>
   );
 };
 
 export default ResultCardBox;
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 1rem 10rem;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 1rem 10rem;
   gap: 1rem;
 `;
 

@@ -1,10 +1,10 @@
-import styled from 'styled-components';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import PreQuestion from './PreQuestion';
-import PreHeading from './PreHeading';
 import { initAnswers } from '../../store/previewSlice';
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import PreQuestion from './PreQuestion';
+import PreHeading from './PreHeading';
 
 const PreCardBox = () => {
   const questions = useAppSelector((state) => state.survey.questions);
@@ -45,53 +45,49 @@ const PreCardBox = () => {
   }, [getAnswerSheet, reset]);
 
   return (
-    <>
-      <Container>
-        <PreHeading />
-        {!reset && getQuestions()}
-        <BottomBox>
-          <Submit to="/result">제출</Submit>
-          <RemoveAnswer onClick={() => setReset(true)}>
-            양식 지우기
-          </RemoveAnswer>
-        </BottomBox>
-      </Container>
-    </>
+    <Container>
+      <PreHeading />
+      {!reset && getQuestions()}
+      <BottomBox>
+        <Submit to="/result">제출</Submit>
+        <RemoveAnswer onClick={() => setReset(true)}>양식 지우기</RemoveAnswer>
+      </BottomBox>
+    </Container>
   );
 };
 
 export default PreCardBox;
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 1rem 10rem;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: start;
   align-items: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 1rem 10rem;
   gap: 1rem;
 `;
 
 const BottomBox = styled.div`
-  width: 100%;
-  max-width: 720px;
-  min-width: 640px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: start;
+  width: 100%;
+  max-width: 720px;
+  min-width: 640px;
 `;
 
 const Submit = styled(Link)`
-  cursor: pointer;
-  color: white;
   padding: 0.6rem 1.4rem;
   border-radius: 4px;
   background-color: #613cb0;
+  color: white;
   font-size: 0.9rem;
   text-decoration: none;
+  cursor: pointer;
 
   &:hover {
     opacity: 0.9;
@@ -99,11 +95,11 @@ const Submit = styled(Link)`
 `;
 
 const RemoveAnswer = styled.div`
-  cursor: pointer;
-  color: #613cb0;
   padding: 0.6rem;
   border-radius: 4px;
+  color: #613cb0;
   font-size: 0.9rem;
+  cursor: pointer;
 
   &:hover {
     background-color: #e0e0e0;

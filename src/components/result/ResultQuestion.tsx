@@ -64,32 +64,30 @@ const ResultQuestion: React.FC<QuestionProps> = ({ idx }) => {
   };
 
   return (
-    <>
-      <Container>
-        <Category>
-          <Title>{question.questionTitle}</Title>
-          <Warn>{question.essential && '*'}</Warn>
-        </Category>
-        {getAnswersBox()}
-      </Container>
-    </>
+    <Container>
+      <Category>
+        <Title>{question.questionTitle}</Title>
+        <Warn>{question.essential && '*'}</Warn>
+      </Category>
+      {getAnswersBox()}
+    </Container>
   );
 };
 
 export default ResultQuestion;
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 720px;
   min-width: 640px;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  background-color: white;
-  border-radius: 10px;
-  border: 1px solid #e0e0e0;
   padding: 1.6rem;
+  gap: 2rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  background-color: white;
 `;
 
 const Category = styled.div`
@@ -110,19 +108,19 @@ const Warn = styled.p`
 const ShortAnswer = styled.input`
   width: 50%;
   box-sizing: border-box;
+  padding: 0.2rem 0;
   border: none;
   border-bottom: 1px solid #e0e0e0;
   font-size: 1rem;
-  padding: 0.2rem 0;
 `;
 
 const LongAnswer = styled.input`
   width: 100%;
   box-sizing: border-box;
+  padding: 0.2rem 0;
   border: none;
   border-bottom: 1px solid #e0e0e0;
   font-size: 1rem;
-  padding: 0.2rem 0;
   &:focus {
     outline: none;
     border-bottom: solid 2px #613cb0;
@@ -142,25 +140,25 @@ const MultipleAnswer = styled.form`
 `;
 
 const Option = styled.div`
-  height: 2rem;
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-items: center;
+  height: 2rem;
   gap: 1rem;
 `;
 
 const RadioBox = styled.input`
-  vertical-align: middle;
-  appearance: none;
-  box-sizing: border-box;
-  border: 2px solid gray;
-  border-radius: 50%;
   width: 1.3rem;
   height: 1.3rem;
+  box-sizing: border-box;
   margin-bottom: 0.3rem;
-  cursor: pointer;
+  border: 2px solid gray;
+  border-radius: 50%;
+  appearance: none;
+  vertical-align: middle;
   transition: 0.3s;
+  cursor: pointer;
 
   &:checked {
     border: 0.4em solid #613cb0;
@@ -168,18 +166,18 @@ const RadioBox = styled.input`
 `;
 
 const CheckBox = styled.input`
-  vertical-align: middle;
-  appearance: none;
   position: relative;
   box-sizing: border-box;
-  border: 2px solid gray;
-  border-radius: 2px;
   width: 1.3rem;
   height: 1.3rem;
   margin-bottom: 0.3rem;
+  border: 2px solid gray;
+  border-radius: 2px;
+  background-color: white;
+  vertical-align: middle;
+  appearance: none;
   cursor: pointer;
   transition: 0.3s;
-  background-color: white;
   z-index: 10;
 
   &:checked {
@@ -192,18 +190,18 @@ const CheckIcon = styled(BsCheck)`
   position: absolute;
   width: 1.2rem;
   height: 1.2rem;
+  box-sizing: border-box;
   margin-bottom: 0.1rem;
   margin-left: 0.25rem;
   border: none;
-  box-sizing: border-box;
   background-color: #613cb0;
   color: white;
   pointer-events: none;
 `;
 
 const Label = styled.label`
-  height: 100%;
   display: flex;
   align-items: center;
+  height: 100%;
   color: #606367;
 `;

@@ -23,9 +23,7 @@ const DropDown: React.FC<DropDownProps> = ({ idx }) => {
     (state) => state.survey.questions[idx].questionType,
   );
 
-  const changeType = (str: string) => {
-    dispatch(setType({ str, idx }));
-  };
+  const changeType = (str: string) => dispatch(setType({ str, idx }));
 
   const changeOption = (category: string) => {
     changeType(category);
@@ -90,34 +88,27 @@ const DropDown: React.FC<DropDownProps> = ({ idx }) => {
   };
 
   return (
-    <>
-      <Container>
-        <CurrentOption
-          onClick={() => {
-            setOpen(!open);
-          }}>
-          {getCategoryCard(category)}
-          <Arrow>
-            {open ? (
-              <MdOutlineArrowDropUp size={24} />
-            ) : (
-              <MdOutlineArrowDropDown size={24} />
-            )}
-          </Arrow>
-        </CurrentOption>
-        {open && (
-          <>
-            <AllOptions>
-              {getCategoryCard('단답형')}
-              {getCategoryCard('장문형')}
-              {getCategoryCard('객관식 질문')}
-              {getCategoryCard('체크박스')}
-              {getCategoryCard('드롭다운')}
-            </AllOptions>
-          </>
-        )}
-      </Container>
-    </>
+    <Container>
+      <CurrentOption onClick={() => setOpen(!open)}>
+        {getCategoryCard(category)}
+        <Arrow>
+          {open ? (
+            <MdOutlineArrowDropUp size={24} />
+          ) : (
+            <MdOutlineArrowDropDown size={24} />
+          )}
+        </Arrow>
+      </CurrentOption>
+      {open && (
+        <AllOptions>
+          {getCategoryCard('단답형')}
+          {getCategoryCard('장문형')}
+          {getCategoryCard('객관식 질문')}
+          {getCategoryCard('체크박스')}
+          {getCategoryCard('드롭다운')}
+        </AllOptions>
+      )}
+    </Container>
   );
 };
 
@@ -131,16 +122,16 @@ const Container = styled.div`
 `;
 
 const CurrentOption = styled.div`
-  width: 100%;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  box-sizing: border-box;
-  overflow: hidden;
-  background-color: white;
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-items: center;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: white;
   cursor: pointer;
   &:hover {
     background-color: #f1f3f4;
@@ -148,34 +139,34 @@ const CurrentOption = styled.div`
 `;
 
 const Arrow = styled.div`
-  color: #717579;
-  pointer-events: none;
   padding-right: 1rem;
+  pointer-events: none;
+  color: #717579;
 `;
 
 const AllOptions = styled.div`
-  width: 15rem;
+  overflow: hidden;
   position: absolute;
+  transform: translateY(20px);
+  width: 15rem;
+  box-sizing: border-box;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
-  transform: translateY(20px);
-  box-sizing: border-box;
-  overflow: hidden;
   background-color: white;
   z-index: 10;
 `;
 
 const OptionCard = styled.div`
-  width: 100%;
-  height: 50px;
-  box-sizing: border-box;
-  padding: 1rem 1rem;
-  cursor: pointer;
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-items: center;
+  width: 100%;
+  height: 50px;
+  box-sizing: border-box;
   gap: 1rem;
+  padding: 1rem 1rem;
+  cursor: pointer;
   color: #717579;
 
   &:hover {
@@ -184,20 +175,20 @@ const OptionCard = styled.div`
 `;
 
 const Icon = styled.div`
-  height: 100%;
-  aspect-ratio: 1;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  height: 100%;
+  aspect-ratio: 1;
 `;
 
 const Text = styled.div`
-  height: 100%;
-  margin-top: 3px;
-  font-size: 0.9rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  height: 100%;
+  margin-top: 3px;
+  font-size: 0.9rem;
 `;

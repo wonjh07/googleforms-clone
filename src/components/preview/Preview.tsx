@@ -3,12 +3,10 @@ import PreCardBox from './PreCardBox';
 
 const Preview = () => {
   return (
-    <>
-      <Container>
-        <PreCardBox />
-        <Footer />
-      </Container>
-    </>
+    <Container>
+      <PreCardBox />
+      <Footer />
+    </Container>
   );
 };
 

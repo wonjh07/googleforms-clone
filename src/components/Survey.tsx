@@ -5,14 +5,12 @@ import SideMenu from './SideMenu';
 
 const Survey = () => {
   return (
-    <>
-      <Container>
-        <NavBar />
-        <SideMenu />
-        <CardBox />
-        <Footer />
-      </Container>
-    </>
+    <Container>
+      <NavBar />
+      <SideMenu />
+      <CardBox />
+      <Footer />
+    </Container>
   );
 };
 

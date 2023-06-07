@@ -11,13 +11,8 @@ interface BottomBoxProps {
 
 const BottomBox: React.FC<BottomBoxProps> = ({ idx }) => {
   const dispatch = useAppDispatch();
-  const copyQuest = () => {
-    dispatch(copyQuestion());
-  };
-
-  const deleteQuest = () => {
-    dispatch(deleteQuestion());
-  };
+  const copyQuest = () => dispatch(copyQuestion());
+  const deleteQuest = () => dispatch(deleteQuestion());
 
   return (
     <>
@@ -46,27 +41,27 @@ const BottomBox: React.FC<BottomBoxProps> = ({ idx }) => {
 export default BottomBox;
 
 const Container = styled.div`
-  width: 100%;
-  height: 5rem;
-  border-top: 1px solid #e0e0e0;
-  box-sizing: border-box;
-  padding: 1.4rem;
   display: flex;
-  gap: 1.2rem;
   flex-direction: row;
   justify-content: end;
   align-items: center;
+  width: 100%;
+  height: 5rem;
+  box-sizing: border-box;
+  padding: 1.4rem;
+  gap: 1.2rem;
+  border-top: 1px solid #e0e0e0;
 `;
 
 const LeftBox = styled.div`
-  width: auto;
-  height: 100%;
-  gap: 1rem;
-  padding: 0 1rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  width: auto;
+  height: 100%;
+  padding: 0 1rem;
+  gap: 1rem;
   border-right: 1px solid #a1a2a3;
   color: #717579;
 `;

@@ -32,37 +32,32 @@ const PreDropDown: React.FC<DropDownProps> = ({ idx }) => {
   };
 
   return (
-    <>
-      <Container>
-        <CurrentOption
-          onClick={() => {
-            setOpen(!open);
-          }}>
-          {getCurrentCard()}
-          <Arrow>
-            {open ? (
-              <MdOutlineArrowDropUp size={24} />
-            ) : (
-              <MdOutlineArrowDropDown size={24} />
-            )}
-          </Arrow>
-        </CurrentOption>
-        {open && (
-          <>
-            <AllOptions>
-              <OptionCard key={idx} onClick={() => changeAnswer('')}>
-                <Text>선택</Text>
+    <Container>
+      <CurrentOption onClick={() => setOpen(!open)}>
+        {getCurrentCard()}
+        <Arrow>
+          {open ? (
+            <MdOutlineArrowDropUp size={24} />
+          ) : (
+            <MdOutlineArrowDropDown size={24} />
+          )}
+        </Arrow>
+      </CurrentOption>
+      {open && (
+        <>
+          <AllOptions>
+            <OptionCard key={idx} onClick={() => changeAnswer('')}>
+              <Text>선택</Text>
+            </OptionCard>
+            {question.options.map((e, idx) => (
+              <OptionCard key={idx} onClick={() => changeAnswer(e)}>
+                <Text>{e}</Text>
               </OptionCard>
-              {question.options.map((e, idx) => (
-                <OptionCard key={idx} onClick={() => changeAnswer(e)}>
-                  <Text>{e}</Text>
-                </OptionCard>
-              ))}
-            </AllOptions>
-          </>
-        )}
-      </Container>
-    </>
+            ))}
+          </AllOptions>
+        </>
+      )}
+    </Container>
   );
 };
 
@@ -76,16 +71,16 @@ const Container = styled.div`
 `;
 
 const CurrentOption = styled.div`
-  width: 100%;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  box-sizing: border-box;
-  overflow: hidden;
-  background-color: white;
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-items: center;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: white;
   cursor: pointer;
   &:hover {
     background-color: #f1f3f4;
@@ -93,35 +88,35 @@ const CurrentOption = styled.div`
 `;
 
 const Arrow = styled.div`
+  padding-right: 1rem;
   color: #717579;
   pointer-events: none;
-  padding-right: 1rem;
 `;
 
 const AllOptions = styled.div`
-  width: 100%;
+  overflow: hidden;
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
   transform: translateY(20px);
-  box-sizing: border-box;
-  overflow: hidden;
   background-color: white;
   z-index: 20;
 `;
 
 const OptionCard = styled.div`
-  width: 100%;
-  height: 60px;
-  box-sizing: border-box;
-  padding: 1rem 1rem;
-  cursor: pointer;
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-items: center;
+  width: 100%;
+  height: 60px;
+  box-sizing: border-box;
+  padding: 1rem 1rem;
   gap: 1rem;
   color: #717579;
+  cursor: pointer;
 
   &:hover {
     background-color: #f1f3f4;
@@ -129,11 +124,11 @@ const OptionCard = styled.div`
 `;
 
 const Text = styled.div`
-  height: 100%;
-  margin-top: 3px;
-  font-size: 0.9rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  height: 100%;
+  margin-top: 3px;
+  font-size: 0.9rem;
 `;

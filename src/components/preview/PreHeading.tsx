@@ -7,33 +7,31 @@ const PreHeading = () => {
   const desc = useAppSelector((state) => state.survey.desc);
 
   return (
-    <>
-      <Container>
-        <Notch />
-        <InputBox>
-          <Title>{title}</Title>
-          <Desc>{desc}</Desc>
-          <UserInfoBox>
-            <Warn>* 필수항목</Warn>
-            <Close to="/">미리보기 종료</Close>
-          </UserInfoBox>
-        </InputBox>
-      </Container>
-    </>
+    <Container>
+      <Notch />
+      <InputBox>
+        <Title>{title}</Title>
+        <Desc>{desc}</Desc>
+        <UserInfoBox>
+          <Warn>* 필수항목</Warn>
+          <Close to="/">미리보기 종료</Close>
+        </UserInfoBox>
+      </InputBox>
+    </Container>
   );
 };
 
 export default PreHeading;
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   width: 100%;
   max-width: 720px;
   min-width: 640px;
   height: auto;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
 `;
 
 const Notch = styled.div`
@@ -44,24 +42,24 @@ const Notch = styled.div`
 `;
 
 const InputBox = styled.div`
-  width: 100%;
-  background-color: white;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
   gap: 1rem;
   border: 1px solid #e0e0e0;
   border-top: 0px;
   border-radius: 0 0 10px 10px;
-  overflow: hidden;
+  background-color: white;
 `;
 
 const Title = styled.div`
   width: 100%;
-  border: none;
-  font-size: 2rem;
   padding: 1.6rem;
   padding-bottom: 0.5rem;
+  border: none;
+  font-size: 2rem;
 `;
 
 const Desc = styled.div`
@@ -72,27 +70,27 @@ const Desc = styled.div`
 `;
 
 const UserInfoBox = styled.div`
-  width: 100%;
-  border-top: 1px solid #e0e0e0;
-  box-sizing: border-box;
-  padding: 1rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: end;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+  border-top: 1px solid #e0e0e0;
 `;
 
 const Warn = styled.div`
-  color: #d63725;
   padding: 0.6rem;
+  color: #d63725;
 `;
 
 const Close = styled(Link)`
-  cursor: pointer;
-  color: #613cb0;
   padding: 0.6rem;
   border-radius: 4px;
+  color: #613cb0;
   text-decoration: none;
+  cursor: pointer;
 
   &:hover {
     background-color: #e0e0e0;

@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom';
 const NavBar = () => {
   return (
     <>
-      <NavContainer>
+      <Container>
         <Icon src={icon} />
         <Title>Google Forms Clone</Title>
         <Link to="/preview">
           <PreviewBtn size={30} />
         </Link>
-      </NavContainer>
+      </Container>
       <Margin />
     </>
   );
@@ -20,24 +20,24 @@ const NavBar = () => {
 
 export default NavBar;
 
-const NavContainer = styled.div`
-  position: fixed;
-  width: 100%;
-  height: 4rem;
-  padding: 0.6rem 2rem;
+const Container = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  position: fixed;
+  width: 100%;
+  height: 4rem;
+  box-sizing: border-box;
+  padding: 0.6rem 2rem;
   gap: 1rem;
   background-color: white;
-  box-sizing: border-box;
   box-shadow: 0px 2px 4px 0px #e0e0e0;
   z-index: 10;
 `;
 
 const Icon = styled.img`
-  box-sizing: border-box;
   height: 100%;
+  box-sizing: border-box;
 `;
 
 const Title = styled.p`

@@ -3,12 +3,10 @@ import ResultCardBox from './ResultCardBox';
 
 const Result = () => {
   return (
-    <>
-      <Container>
-        <ResultCardBox />
-        <Footer />
-      </Container>
-    </>
+    <Container>
+      <ResultCardBox />
+      <Footer />
+    </Container>
   );
 };
 
