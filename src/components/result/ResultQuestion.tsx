@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useAppSelector } from '../../store/hooks';
 import { BsCheck } from 'react-icons/bs';
-import PreDropDown from './ResultDropDown';
+import ResultDropDown from './ResultDropDown';
 
 interface QuestionProps {
   idx: number;
@@ -22,17 +22,17 @@ const ResultQuestion: React.FC<QuestionProps> = ({ idx }) => {
     if (type === '객관식 질문') {
       return (
         <MultipleAnswer>
-          {question.options.map((option, idx) => (
-            <Option key={idx}>
+          {question.options.map((option, oIdx) => (
+            <Option key={oIdx}>
               <RadioBox
                 type="radio"
-                id={`site${idx}`}
+                id={`site${oIdx}`}
                 value={option}
                 name="site"
                 checked={option === answer}
                 disabled
               />
-              <Label htmlFor={`site${idx}`}>{option}</Label>
+              <Label htmlFor={`site${oIdx}`}>{option}</Label>
             </Option>
           ))}
         </MultipleAnswer>
@@ -41,25 +41,25 @@ const ResultQuestion: React.FC<QuestionProps> = ({ idx }) => {
     if (type === '체크박스') {
       return (
         <MultipleAnswer>
-          {question.options.map((option, idx) => (
-            <Option key={idx}>
+          {question.options.map((option, oIdx) => (
+            <Option key={oIdx}>
               <CheckBox
                 type="checkbox"
-                id={`site${idx}`}
+                id={`site${oIdx}`}
                 value={option}
-                name={`site${idx}`}
+                name={`site${oIdx}`}
                 checked={answer[option]}
                 disabled
               />
               <CheckIcon className="check" />
-              <Label htmlFor={`site${idx}`}>{option}</Label>
+              <Label htmlFor={`site${oIdx}`}>{option}</Label>
             </Option>
           ))}
         </MultipleAnswer>
       );
     }
     if (type === '드롭다운') {
-      return <PreDropDown idx={idx} />;
+      return <ResultDropDown idx={idx} />;
     }
   };
 

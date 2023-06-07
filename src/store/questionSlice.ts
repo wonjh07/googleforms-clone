@@ -23,8 +23,8 @@ interface TypeState {
 }
 
 interface OptionsState {
-  options: string[];
-  idx: number;
+  oIdx: number;
+  name: string;
 }
 
 interface DndState {
@@ -65,8 +65,16 @@ export const questionSlice = createSlice({
     setQuestionTitle: (state, action: PayloadAction<TypeState>) => {
       state.questions[action.payload.idx].questionTitle = action.payload.str;
     },
-    setOpts: (state, action: PayloadAction<OptionsState>) => {
-      state.questions[action.payload.idx].options = action.payload.options;
+    changeOpts: (state, action: PayloadAction<OptionsState>) => {
+      state.questions[state.focus].options[action.payload.oIdx] =
+        action.payload.name;
+    },
+    removeOpts: (state, action: PayloadAction<number>) => {
+      state.questions[state.focus].options.splice(action.payload, 1);
+    },
+    newOpts: (state) => {
+      const num = state.questions[state.focus].options.length + 1;
+      state.questions[state.focus].options.push(`옵션 ${num}`);
     },
     setEssential: (state, action: PayloadAction<number>) => {
       state.questions[action.payload].essential =
@@ -93,11 +101,18 @@ export const questionSlice = createSlice({
     focusOn: (state, action: PayloadAction<number>) => {
       state.focus = action.payload;
     },
-    changeIdx: (state, action: PayloadAction<DndState>) => {
+    dragQuest: (state, action: PayloadAction<DndState>) => {
       const [a, b] = [action.payload.x, action.payload.y];
       const temp = { ...state.questions[a] };
       state.questions[a] = state.questions[b];
       state.questions[b] = temp;
+    },
+    dragOption: (state, action: PayloadAction<DndState>) => {
+      const [a, b] = [action.payload.x, action.payload.y];
+      const temp = state.questions[state.focus].options[a];
+      state.questions[state.focus].options[a] =
+        state.questions[state.focus].options[b];
+      state.questions[state.focus].options[b] = temp;
     },
     setDragMod: (state, action: PayloadAction<boolean>) => {
       state.draggable = action.payload;
@@ -110,13 +125,16 @@ export const {
   setDesc,
   setType,
   setQuestionTitle,
-  setOpts,
+  changeOpts,
+  newOpts,
+  removeOpts,
   setEssential,
   copyQuestion,
   deleteQuestion,
   setNewQuestion,
   focusOn,
-  changeIdx,
+  dragQuest,
+  dragOption,
   setDragMod,
 } = questionSlice.actions;
 export default questionSlice.reducer;

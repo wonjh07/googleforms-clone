@@ -44,18 +44,18 @@ const PreQuestion: React.FC<QuestionProps> = ({ idx }) => {
     if (type === '객관식 질문') {
       return (
         <MultipleAnswer>
-          {question.options.map((option, idx) => (
-            <Option key={idx}>
+          {question.options.map((option, oIdx) => (
+            <Option key={oIdx}>
               <RadioBox
                 type="radio"
-                id={`site${idx}`}
+                id={`site${oIdx}`}
                 value={option}
                 name="site"
                 onClick={(e: any) => {
                   setSingleAnswer(e.target.value);
                 }}
               />
-              <Label htmlFor={`site${idx}`}>{option}</Label>
+              <Label htmlFor={`site${oIdx}`}>{option}</Label>
             </Option>
           ))}
         </MultipleAnswer>
@@ -64,19 +64,19 @@ const PreQuestion: React.FC<QuestionProps> = ({ idx }) => {
     if (type === '체크박스') {
       return (
         <MultipleAnswer>
-          {question.options.map((option, idx) => (
-            <Option key={idx}>
+          {question.options.map((option, oIdx) => (
+            <Option key={oIdx}>
               <CheckBox
                 type="checkbox"
-                id={`site${idx}`}
+                id={`site${oIdx}`}
                 value={option}
-                name={`site${idx}`}
+                name={`site${oIdx}`}
                 onClick={(e: any) => {
                   setMultipleAnswer(e.target.value);
                 }}
               />
               <CheckIcon className="check" />
-              <Label htmlFor={`site${idx}`}>{option}</Label>
+              <Label htmlFor={`site${oIdx}`}>{option}</Label>
             </Option>
           ))}
         </MultipleAnswer>

@@ -8,11 +8,17 @@ import { useEffect, useState } from 'react';
 import BottomBox from './BottomBox';
 interface QuestionProps {
   idx: number;
-  changeStart: (v: number) => void;
-  changeEnd: (v: number) => void;
+  dragStart: (v: number) => void;
+  dragOver: (v: number) => void;
+  dragEnd: () => void;
 }
 
-const Question: React.FC<QuestionProps> = ({ idx, changeStart, changeEnd }) => {
+const Question: React.FC<QuestionProps> = ({
+  idx,
+  dragStart,
+  dragOver,
+  dragEnd,
+}) => {
   const question = useAppSelector((state) => state.survey.questions[idx]);
   const focused = useAppSelector((state) => state.survey.focus);
   const isDraggable = useAppSelector((state) => state.survey.draggable);
@@ -32,7 +38,9 @@ const Question: React.FC<QuestionProps> = ({ idx, changeStart, changeEnd }) => {
   };
 
   const setDraggable = (v: boolean) => {
-    dispatch(setDragMod(v));
+    if (isDraggable !== v) {
+      dispatch(setDragMod(v));
+    }
   };
 
   useEffect(() => {
@@ -44,14 +52,21 @@ const Question: React.FC<QuestionProps> = ({ idx, changeStart, changeEnd }) => {
   }, [focused, idx]);
 
   const dragFunction = (e: any, type: string) => {
-    if (type === 'Start') {
+    if (type === 'Start' && e.target.dataset.drag === 'quest') {
       e.dataTransfer.effectAllowed = 'move';
       setGrab(true);
-      changeStart(parseInt(e.target.id));
-    } else if (type === 'Enter' && e.target.dataset.dropzone) {
-      changeEnd(parseInt(e.target.id));
+      dragStart(parseInt(e.target.id));
+    } else if (
+      type === 'Enter' &&
+      e.target.dataset.dropzone === 'quest' &&
+      e.target.id
+    ) {
+      dragOver(parseInt(e.target.id));
     } else if (type === 'End') {
-      setGrab(false);
+      if (grab) {
+        setGrab(false);
+        dragEnd();
+      }
     }
   };
 
@@ -60,6 +75,7 @@ const Question: React.FC<QuestionProps> = ({ idx, changeStart, changeEnd }) => {
       <Container
         draggable={isDraggable}
         id={`${idx}`}
+        data-drag="quest"
         onDragStart={(e) => {
           dragFunction(e, 'Start');
         }}
@@ -77,7 +93,7 @@ const Question: React.FC<QuestionProps> = ({ idx, changeStart, changeEnd }) => {
         grab={grab}>
         <SelectedBox selected={selected}>
           <Drag
-            data-dropzone={true}
+            data-dropzone="quest"
             id={`${idx}`}
             onMouseEnter={() => {
               setDraggable(true);
@@ -90,6 +106,8 @@ const Question: React.FC<QuestionProps> = ({ idx, changeStart, changeEnd }) => {
             {grabIcon && (
               <RxDragHandleDots2
                 size={20}
+                id={`${idx}`}
+                data-dropzone="quest"
                 style={{ transform: 'rotate(90deg)' }}
               />
             )}
@@ -137,7 +155,7 @@ const Container = styled.div<{ grab: boolean }>`
   border: ${(props) =>
     props.grab ? '4px solid #613cb0' : '1px solid #e0e0e0'};
   overflow: hidden;
-  animation-name: PopUp;
+  animation-name: 'PopUp';
   animation-duration: 0.3s;
   animation-timing-function: ease-in-out;
 `;

@@ -3,7 +3,7 @@ import Heading from './Heading';
 import Question from './Qustion';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { useRef } from 'react';
-import { changeIdx, focusOn } from '../store/questionSlice';
+import { dragQuest, focusOn } from '../store/questionSlice';
 
 const CardBox = () => {
   const questions = useAppSelector((state) => state.survey.questions);
@@ -11,23 +11,27 @@ const CardBox = () => {
   const focused = useAppSelector((state) => state.survey.focus);
   const dispatch = useAppDispatch();
 
-  const dnd = (x: number, y: number) => {
-    dispatch(changeIdx({ x, y }));
+  const dragAndDrop = (x: number, y: number) => {
+    dispatch(dragQuest({ x, y }));
   };
 
   const focusOnHere = (v: number) => {
     dispatch(focusOn(v));
   };
 
-  const changeStart = (v: number) => {
+  const dragStart = (v: number) => {
     if (target.current !== v) {
       target.current = v;
     }
   };
 
-  const changeEnd = (v: number) => {
-    if (target.current !== v) {
-      dnd(target.current, v);
+  const dragEnd = () => {
+    target.current = -1;
+  };
+
+  const dragOver = (v: number) => {
+    if (target.current !== -1 && target.current !== v) {
+      dragAndDrop(target.current, v);
       if (focused === target.current) {
         focusOnHere(v);
       } else if (focused === v) {
@@ -42,8 +46,9 @@ const CardBox = () => {
       <Question
         key={e.id}
         idx={idx}
-        changeStart={changeStart}
-        changeEnd={changeEnd}
+        dragStart={dragStart}
+        dragOver={dragOver}
+        dragEnd={dragEnd}
       />
     ));
   };
