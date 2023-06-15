@@ -1,7 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 export interface PreviewState {
-  open: boolean;
   data: any;
 }
 
@@ -11,24 +10,17 @@ export interface InitAnswerState {
 
 export interface AnswerState {
   idx: number;
-  answer: any;
+  answer: string;
 }
 
 const initialState: PreviewState = {
-  open: false,
   data: [],
 };
 
 export const previewSlice = createSlice({
-  name: 'survey',
+  name: 'preview',
   initialState: initialState,
   reducers: {
-    openPreview: (state) => {
-      state.open = true;
-    },
-    closePreview: (state) => {
-      state.open = false;
-    },
     initAnswers: (state, action: PayloadAction<InitAnswerState>) => {
       state.data = action.payload;
     },
@@ -42,11 +34,6 @@ export const previewSlice = createSlice({
   },
 });
 
-export const {
-  openPreview,
-  closePreview,
-  initAnswers,
-  setAnswers,
-  setMultiAnswers,
-} = previewSlice.actions;
+export const { initAnswers, setAnswers, setMultiAnswers } =
+  previewSlice.actions;
 export default previewSlice.reducer;
